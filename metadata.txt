@@ -1,0 +1,40 @@
+# This file contains metadata for your plugin. Since
+# version 2.0 of QGIS this is the proper way to supply
+# information about a plugin. The old method of
+# embedding metadata in __init__.py will
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=RoofClassify
+qgisMinimumVersion=2.0
+description=A QGIS Tool for Automatically Identifying Asbestos Roofing
+version=0.4
+author=Alessandro Bacciottini, Arjan Feta
+email=arjan.feta@stud.unifi.it
+
+about=A QGIS tool that is conceived for automatically identifying buildings with asbestos roofing. Its task is to identify asbestos cladding in remotely sensed images, but not to classify the different types of roofing. For more detailed information on how it works: https://www.mdpi.com/2220-9964/8/3/131
+
+tracker=https://github.com/SatStatPIN/RoofClassify/issues
+repository=https://github.com/SatStatPIN/RoofClassify
+
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=tags=classification, identification
+
+homepage=https://github.com/SatStatPIN/RoofClassify
+category=Plugin
+ginicon=icon.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
