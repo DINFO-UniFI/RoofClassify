@@ -20,7 +20,7 @@ This plugin requires:
 Go to `Plugins` -> `Manage and Install Plugins`, look for "ClassifyRoofs" Locator and install the plugin.
 
 Open the plugins GUI by clicking to its icon or from the  plugin menu entry `Plugins`-> `ClassifyRoofs`.
-               ![gui](https://github.com/SatStatPIN/ClassifyRoofs/blob/master/img/gui.png)
+               ![gui](https://github.com/SatStatPIN/RoofClassify/blob/master/img/gui.png)
 
 Fill the entries with the requested paths and click `ok`
 
