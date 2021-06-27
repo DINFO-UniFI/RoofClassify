@@ -1,0 +1,27 @@
+[general]
+name=RoofClassify
+about=A QGIS tool that is conceived for automatically identifying buildings with asbestos roofing. Its task is to identify asbestos cladding in remotely sensed images, but not to classify the different types of roofing. For more detailed information on how it works: https://www.mdpi.com/2220-9964/8/3/131.
+category=Plugin
+description=A QGIS Tool for Automatically Identifying Asbestos Roofing
+icon=resources/images/icon.png
+tags=classification, identification, asbestos, roofs
+
+
+# credits and contact
+author=Alessandro Bacciottini, Arjan Feta, Quy Thy Truong (Oslandia), Julien Moura (Oslandia)
+email=qgis@oslandia.com
+homepage=https://DINFO-UniFI.github.io/RoofClassify/
+repository=https://github.com/DINFO-UniFI/RoofClassify/
+tracker=https://github.com/DINFO-UniFI/RoofClassify/issues/
+
+
+# experimental flag
+deprecated=False
+experimental=False
+qgisMinimumVersion=3.16
+qgisMaximumVersion=3.99
+
+
+# versionning
+version=1.0.0-beta1
+changelog=

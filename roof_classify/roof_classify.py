@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  ClassifyRoof
@@ -20,26 +19,26 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
-from PyQt4.QtGui import QAction, QIcon, QFileDialog
+import glob
+import os
+import os.path
+import subprocess
+import time
+from subprocess import call
+
+import numpy as np
+
 # Initialize Qt resources from file resources.py
 import resources
-# Import the code for the dialog
-from roof_classify_dialog import RoofClassifyDialog
-import os.path
-from subprocess import call
-import time
-
 
 #IMPORT PER CLASSIFICATORE
 import shapefile
-import numpy as np
-import os
-import os.path
-import glob
-import subprocess
-
 from osgeo import gdal
+from PyQt4.QtCore import QCoreApplication, QSettings, QTranslator, qVersion
+from PyQt4.QtGui import QAction, QFileDialog, QIcon
+
+# Import the code for the dialog
+from roof_classify_dialog import RoofClassifyDialog
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
@@ -487,12 +486,3 @@ class RoofClassify:
 			if self.dlg.checkBox_2.isChecked():
 				print("ciao2")
 				#inserire codice che crea shape percentuale
-
-
-
-
-
-
-
-
-

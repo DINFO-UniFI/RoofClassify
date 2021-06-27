@@ -1,4 +1,3 @@
-# coding=utf-8
 """Dialog test.
 
 .. note:: This program is free software; you can redistribute it and/or modify
@@ -8,17 +7,16 @@
 
 """
 
-__author__ = 'alessandro.bacciottini@gmail.com'
-__date__ = '2016-07-20'
-__copyright__ = 'Copyright 2016, alessandro bacciottini'
+__author__ = "alessandro.bacciottini@gmail.com"
+__date__ = "2016-07-20"
+__copyright__ = "Copyright 2016, alessandro bacciottini"
 
 import unittest
 
-from PyQt4.QtGui import QDialogButtonBox, QDialog
-
+from PyQt4.QtGui import QDialog, QDialogButtonBox
 from roof_classify_dialog import RoofClassifyDialog
-
 from utilities import get_qgis_app
+
 QGIS_APP = get_qgis_app()
 
 
@@ -48,8 +46,8 @@ class RoofClassifyDialogTest(unittest.TestCase):
         result = self.dialog.result()
         self.assertEqual(result, QDialog.Rejected)
 
+
 if __name__ == "__main__":
     suite = unittest.makeSuite(RoofClassifyDialogTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
-
