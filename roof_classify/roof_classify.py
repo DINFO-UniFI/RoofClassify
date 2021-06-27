@@ -65,13 +65,13 @@ COLORS = [
 
 
 def calcolaMedia(mat,i,dim) :
-	num_val=0
-	somma=0
-	for j in range(dim-1) :
-		if mat[j,i] != 0 :
-			num_val=num_val+1
-			somma=somma+mat[j,i]
-	return somma/num_val ,num_val
+    num_val=0
+    somma=0
+    for j in range(dim-1) :
+        if mat[j,i] != 0 :
+            num_val=num_val+1
+            somma=somma+mat[j,i]
+    return somma/num_val ,num_val
 
 
 
@@ -246,25 +246,25 @@ class RoofClassify:
 
     def select_raster(self):       # cartella che contiene i raster da dover classificare
         #filename = QFileDialog.getOpenFileName(self.dlg, "Select raster ","", '*.tif')
-		directory=QFileDialog.getExistingDirectory(self.dlg, "Seleziona cartella contenente raster da classificare")
-		#self.dlg.lineEdit.setText(filename)
-		self.dlg.lineEdit.setText(directory)
+        directory=QFileDialog.getExistingDirectory(self.dlg, "Seleziona cartella contenente raster da classificare")
+        #self.dlg.lineEdit.setText(filename)
+        self.dlg.lineEdit.setText(directory)
 
 
     def select_shape(self):
-	    #filename=QFileDialog.getOpenFileName(self.dlg, "select shape","",'*.shp')
-	    #self.dlg.lineEdit_2.setText(filename)
-		directory2=QFileDialog.getExistingDirectory(self.dlg, "Seleziona cartella contenente shape di training")
-		self.dlg.lineEdit_2.setText(directory2)
+        #filename=QFileDialog.getOpenFileName(self.dlg, "select shape","",'*.shp')
+        #self.dlg.lineEdit_2.setText(filename)
+        directory2=QFileDialog.getExistingDirectory(self.dlg, "Seleziona cartella contenente shape di training")
+        self.dlg.lineEdit_2.setText(directory2)
 
 
     def select_raster_class(self):
-	    filename=QFileDialog.getOpenFileName(self.dlg, "select training raster","",'*.tif')
-	    self.dlg.lineEdit_3.setText(filename)
+        filename=QFileDialog.getOpenFileName(self.dlg, "select training raster","",'*.tif')
+        self.dlg.lineEdit_3.setText(filename)
 
     def select_output_folder(self):
-	    out_folder=QFileDialog.getExistingDirectory(self.dlg, "Seleziona cartella per output")
-	    self.dlg.lineEdit_4.setText(out_folder)
+        out_folder=QFileDialog.getExistingDirectory(self.dlg, "Seleziona cartella per output")
+        self.dlg.lineEdit_4.setText(out_folder)
 
 
 
@@ -277,212 +277,212 @@ class RoofClassify:
         # See if OK was pressed
         if result:
 
-			# da qui inizia l'esecuzione del plugin una volta che si preme OK
+            # da qui inizia l'esecuzione del plugin una volta che si preme OK
 
 
-			# serve per rasterizzare un vettore. Ritorna un gdal.Dataset.
-			def create_mask_from_vector(vector_data_path, cols, rows, geo_transform, projection, target_value=1,
-										output_fname='', dataset_format='MEM'):
-				"""
-				:param vector_data_path: Path ad un shapefile
-				:param cols: Numero di colonne del risultato
-				:param rows: Numero di righe del risultato
-				:param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-									  transforming between pixel/line (P,L) raster space, and projection
-									  coordinates (Xp,Yp) space.
-				:param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-				:param target_value: Pixel value for the pixels. Must be a valid gdal.GDT_UInt16 value.
-				:param output_fname: If the dataset_format is GeoTIFF, this is the output file name
-				:param dataset_format: The gdal.Dataset driver name. [default: MEM]
-				"""
-				data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
-				if data_source is None:
-					report_and_exit("File read failed: %s", vector_data_path)
-				layer = data_source.GetLayer(0)
-				driver = gdal.GetDriverByName(dataset_format)
-				target_ds = driver.Create(output_fname, cols, rows, 1, gdal.GDT_UInt16)
-				target_ds.SetGeoTransform(geo_transform)
-				target_ds.SetProjection(projection)
-				gdal.RasterizeLayer(target_ds, [1], layer, burn_values=[target_value])
-				return target_ds
+            # serve per rasterizzare un vettore. Ritorna un gdal.Dataset.
+            def create_mask_from_vector(vector_data_path, cols, rows, geo_transform, projection, target_value=1,
+                                        output_fname='', dataset_format='MEM'):
+                """
+                :param vector_data_path: Path ad un shapefile
+                :param cols: Numero di colonne del risultato
+                :param rows: Numero di righe del risultato
+                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
+                                      transforming between pixel/line (P,L) raster space, and projection
+                                      coordinates (Xp,Yp) space.
+                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
+                :param target_value: Pixel value for the pixels. Must be a valid gdal.GDT_UInt16 value.
+                :param output_fname: If the dataset_format is GeoTIFF, this is the output file name
+                :param dataset_format: The gdal.Dataset driver name. [default: MEM]
+                """
+                data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
+                if data_source is None:
+                    report_and_exit("File read failed: %s", vector_data_path)
+                layer = data_source.GetLayer(0)
+                driver = gdal.GetDriverByName(dataset_format)
+                target_ds = driver.Create(output_fname, cols, rows, 1, gdal.GDT_UInt16)
+                target_ds.SetGeoTransform(geo_transform)
+                target_ds.SetProjection(projection)
+                gdal.RasterizeLayer(target_ds, [1], layer, burn_values=[target_value])
+                return target_ds
 
 
-			def vectors_to_raster(file_paths, rows, cols, geo_transform, projection):
-				"""
-				Rasterize, in a single image, all the vectors in the given directory.
-				The data of each file will be assigned the same pixel value. This value is defined by the order
-				of the file in file_paths, starting with 1: so the points/poligons/etc in the same file will be
-				marked as 1, those in the second file will be 2, and so on.
-				:param file_paths: Path to a directory with shapefiles
-				:param rows: Number of rows of the result
-				:param cols: Number of columns of the result
-				:param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-									  transforming between pixel/line (P,L) raster space, and projection
-									  coordinates (Xp,Yp) space.
-				:param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-				"""
-				labeled_pixels = np.zeros((rows, cols))
-				for i, path in enumerate(file_paths):
-					label = i+1
+            def vectors_to_raster(file_paths, rows, cols, geo_transform, projection):
+                """
+                Rasterize, in a single image, all the vectors in the given directory.
+                The data of each file will be assigned the same pixel value. This value is defined by the order
+                of the file in file_paths, starting with 1: so the points/poligons/etc in the same file will be
+                marked as 1, those in the second file will be 2, and so on.
+                :param file_paths: Path to a directory with shapefiles
+                :param rows: Number of rows of the result
+                :param cols: Number of columns of the result
+                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
+                                      transforming between pixel/line (P,L) raster space, and projection
+                                      coordinates (Xp,Yp) space.
+                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
+                """
+                labeled_pixels = np.zeros((rows, cols))
+                for i, path in enumerate(file_paths):
+                    label = i+1
 
-					ds = create_mask_from_vector(path, cols, rows, geo_transform, projection,
-												 target_value=label)
-					band = ds.GetRasterBand(1)
-					a = band.ReadAsArray()
+                    ds = create_mask_from_vector(path, cols, rows, geo_transform, projection,
+                                                 target_value=label)
+                    band = ds.GetRasterBand(1)
+                    a = band.ReadAsArray()
 
-					labeled_pixels += a
-					ds = None
-				return labeled_pixels
-
-
-
-			def write_geotiff(fname, data, geo_transform, projection, data_type=gdal.GDT_Byte):
-				"""
-				Create a GeoTIFF file with the given data.
-				:param fname: Path to a directory with shapefiles
-				:param data: Number of rows of the result
-				:param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-									  transforming between pixel/line (P,L) raster space, and projection
-									  coordinates (Xp,Yp) space.
-				:param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-				"""
-				driver = gdal.GetDriverByName('GTiff')
-				rows, cols = data.shape
-				dataset = driver.Create(fname, cols, rows, 1, data_type)
-				dataset.SetGeoTransform(geo_transform)
-				dataset.SetProjection(projection)
-				band = dataset.GetRasterBand(1)
-				band.WriteArray(data)
-
-				ct = gdal.ColorTable()
-				for pixel_value in range(len(classes)+1):
-					color_hex = COLORS[pixel_value]
-					r = int(color_hex[1:3], 16)
-					g = int(color_hex[3:5], 16)
-					b = int(color_hex[5:7], 16)
-					ct.SetColorEntry(pixel_value, (r, g, b, 255))
-				band.SetColorTable(ct)
-
-				metadata = {
-					'TIFFTAG_COPYRIGHT': 'CC BY 4.0',
-					'TIFFTAG_DOCUMENTNAME': 'classification',
-					'TIFFTAG_IMAGEDESCRIPTION': 'Supervised classification.',
-					'TIFFTAG_MAXSAMPLEVALUE': str(len(classes)),
-					'TIFFTAG_MINSAMPLEVALUE': '0',
-					'TIFFTAG_SOFTWARE': 'Python, GDAL, scikit-learn'
-				}
-				dataset.SetMetadata(metadata)
-
-				dataset = None  # Close the file
-				return
+                    labeled_pixels += a
+                    ds = None
+                return labeled_pixels
 
 
 
+            def write_geotiff(fname, data, geo_transform, projection, data_type=gdal.GDT_Byte):
+                """
+                Create a GeoTIFF file with the given data.
+                :param fname: Path to a directory with shapefiles
+                :param data: Number of rows of the result
+                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
+                                      transforming between pixel/line (P,L) raster space, and projection
+                                      coordinates (Xp,Yp) space.
+                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
+                """
+                driver = gdal.GetDriverByName('GTiff')
+                rows, cols = data.shape
+                dataset = driver.Create(fname, cols, rows, 1, data_type)
+                dataset.SetGeoTransform(geo_transform)
+                dataset.SetProjection(projection)
+                band = dataset.GetRasterBand(1)
+                band.WriteArray(data)
+
+                ct = gdal.ColorTable()
+                for pixel_value in range(len(classes)+1):
+                    color_hex = COLORS[pixel_value]
+                    r = int(color_hex[1:3], 16)
+                    g = int(color_hex[3:5], 16)
+                    b = int(color_hex[5:7], 16)
+                    ct.SetColorEntry(pixel_value, (r, g, b, 255))
+                band.SetColorTable(ct)
+
+                metadata = {
+                    'TIFFTAG_COPYRIGHT': 'CC BY 4.0',
+                    'TIFFTAG_DOCUMENTNAME': 'classification',
+                    'TIFFTAG_IMAGEDESCRIPTION': 'Supervised classification.',
+                    'TIFFTAG_MAXSAMPLEVALUE': str(len(classes)),
+                    'TIFFTAG_MINSAMPLEVALUE': '0',
+                    'TIFFTAG_SOFTWARE': 'Python, GDAL, scikit-learn'
+                }
+                dataset.SetMetadata(metadata)
+
+                dataset = None  # Close the file
+                return
 
 
 
 
-			print(self.dlg.lineEdit.text())
-			print(self.dlg.lineEdit_2.text())
-			#rasterIn=self.dlg.lineEdit.text()
-			directory_raster=self.dlg.lineEdit.text()
-			directory_shape=self.dlg.lineEdit_2.text()
-			raster_training=self.dlg.lineEdit_3.text()
-			#log = open("D:/AMIANTO/output/log.txt", "w")
-			os.chdir(directory_raster)
-			print(raster_training)
-			#log.write(time.strftime("%Y-%m-%d %H:%M"))
-			#log.write("caricamento training set..\n")
-			out_folder=self.dlg.lineEdit_4.text()
 
 
 
-			nomi=""
-
-
-			nnn=1
-			for file in glob.glob("*.tif"):
-				print(file)
-				#raster_dataset2 = gdal.Open("C:/Users/Alessandro/Desktop/11-10/ViaToscanaTestRitagliato.tif", gdal.GA_ReadOnly)
-
-				x=directory_raster+'/'+file
-				print(x)
-				raster_dataset2 = gdal.Open(x, gdal.GA_ReadOnly)
-
-
-				geo_transform2 = raster_dataset2.GetGeoTransform()
-
-
-				proj2 = raster_dataset2.GetProjectionRef()
-				bands_data2 = []
-				for b in range(1, raster_dataset2.RasterCount+1):
-						band2 = raster_dataset2.GetRasterBand(b)
-						bands_data2.append(band2.ReadAsArray())
-				bands_data2 = np.dstack(bands_data2)
-				rows2, cols2, n_bands2 = bands_data2.shape
-
-				n_samples2 = rows2*cols2
-
-
-				raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
-				geo_transform = raster_dataset.GetGeoTransform()
-				proj = raster_dataset.GetProjectionRef()
-				bands_data = []
-				for b in range(1, raster_dataset.RasterCount+1):
-						band = raster_dataset.GetRasterBand(b)
-						bands_data.append(band.ReadAsArray())
-
-				bands_data = np.dstack(bands_data)
-				rows, cols, n_bands = bands_data.shape
+            print(self.dlg.lineEdit.text())
+            print(self.dlg.lineEdit_2.text())
+            #rasterIn=self.dlg.lineEdit.text()
+            directory_raster=self.dlg.lineEdit.text()
+            directory_shape=self.dlg.lineEdit_2.text()
+            raster_training=self.dlg.lineEdit_3.text()
+            #log = open("D:/AMIANTO/output/log.txt", "w")
+            os.chdir(directory_raster)
+            print(raster_training)
+            #log.write(time.strftime("%Y-%m-%d %H:%M"))
+            #log.write("caricamento training set..\n")
+            out_folder=self.dlg.lineEdit_4.text()
 
 
 
-
-					# A sample is a vector with all the bands data. Each pixel (independent of its position) is a
-					# sample.
-				n_samples = rows*cols
-				files = [f for f in os.listdir(directory_shape) if f.endswith('.shp')]
-
-				classes = [f.split('.')[0] for f in files]
-				print(classes)
-				shapefiles = [os.path.join(directory_shape, f) for f in files if f.endswith('.shp')]
-				labeled_pixels = vectors_to_raster(shapefiles, rows, cols, geo_transform, proj)
-				is_train = np.nonzero(labeled_pixels)
-				training_labels = labeled_pixels[is_train]
-				training_samples = bands_data[is_train]
-
-				flat_pixels = bands_data2.reshape((n_samples2, n_bands2))
-
-				CLASSIFIERS = {
-						# http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
-						'random-forest': RandomForestClassifier(n_jobs=4, n_estimators=10, class_weight='balanced'),
-						# http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-						'svm': SVC(class_weight='balanced')
-				}
-				classifier = CLASSIFIERS['random-forest']
-
-				classifier.fit(training_samples, training_labels)
+            nomi=""
 
 
-				result = classifier.predict(flat_pixels)
+            nnn=1
+            for file in glob.glob("*.tif"):
+                print(file)
+                #raster_dataset2 = gdal.Open("C:/Users/Alessandro/Desktop/11-10/ViaToscanaTestRitagliato.tif", gdal.GA_ReadOnly)
 
-					# Reshape the result: split the labeled pixels into rows to create an image
-				classification = result.reshape((rows2, cols2))
-				file=file.replace(".tif","")
-				name=out_folder+"\\"+file+"_classificato.tif"
-				print(name)
-				write_geotiff(name, classification, geo_transform2, proj2)
-				nnn=nnn+1
-				nomi = nomi + " " + name
+                x=directory_raster+'/'+file
+                print(x)
+                raster_dataset2 = gdal.Open(x, gdal.GA_ReadOnly)
 
 
-			if nnn>2:
-				dove= "D:/risultato/ClassificataUnita.tif"
-				subprocess.call("gdal_merge.bat -ot UInt16 -pct -o "+dove+" -of GTiff " + nomi)
+                geo_transform2 = raster_dataset2.GetGeoTransform()
 
-			if self.dlg.checkBox.isChecked():
-				print("ciao")
-				#inserire codice che crea shape conteggio
-			if self.dlg.checkBox_2.isChecked():
-				print("ciao2")
-				#inserire codice che crea shape percentuale
+
+                proj2 = raster_dataset2.GetProjectionRef()
+                bands_data2 = []
+                for b in range(1, raster_dataset2.RasterCount+1):
+                        band2 = raster_dataset2.GetRasterBand(b)
+                        bands_data2.append(band2.ReadAsArray())
+                bands_data2 = np.dstack(bands_data2)
+                rows2, cols2, n_bands2 = bands_data2.shape
+
+                n_samples2 = rows2*cols2
+
+
+                raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
+                geo_transform = raster_dataset.GetGeoTransform()
+                proj = raster_dataset.GetProjectionRef()
+                bands_data = []
+                for b in range(1, raster_dataset.RasterCount+1):
+                        band = raster_dataset.GetRasterBand(b)
+                        bands_data.append(band.ReadAsArray())
+
+                bands_data = np.dstack(bands_data)
+                rows, cols, n_bands = bands_data.shape
+
+
+
+
+                    # A sample is a vector with all the bands data. Each pixel (independent of its position) is a
+                    # sample.
+                n_samples = rows*cols
+                files = [f for f in os.listdir(directory_shape) if f.endswith('.shp')]
+
+                classes = [f.split('.')[0] for f in files]
+                print(classes)
+                shapefiles = [os.path.join(directory_shape, f) for f in files if f.endswith('.shp')]
+                labeled_pixels = vectors_to_raster(shapefiles, rows, cols, geo_transform, proj)
+                is_train = np.nonzero(labeled_pixels)
+                training_labels = labeled_pixels[is_train]
+                training_samples = bands_data[is_train]
+
+                flat_pixels = bands_data2.reshape((n_samples2, n_bands2))
+
+                CLASSIFIERS = {
+                        # http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+                        'random-forest': RandomForestClassifier(n_jobs=4, n_estimators=10, class_weight='balanced'),
+                        # http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+                        'svm': SVC(class_weight='balanced')
+                }
+                classifier = CLASSIFIERS['random-forest']
+
+                classifier.fit(training_samples, training_labels)
+
+
+                result = classifier.predict(flat_pixels)
+
+                    # Reshape the result: split the labeled pixels into rows to create an image
+                classification = result.reshape((rows2, cols2))
+                file=file.replace(".tif","")
+                name=out_folder+"\\"+file+"_classificato.tif"
+                print(name)
+                write_geotiff(name, classification, geo_transform2, proj2)
+                nnn=nnn+1
+                nomi = nomi + " " + name
+
+
+            if nnn>2:
+                dove= "D:/risultato/ClassificataUnita.tif"
+                subprocess.call("gdal_merge.bat -ot UInt16 -pct -o "+dove+" -of GTiff " + nomi)
+
+            if self.dlg.checkBox.isChecked():
+                print("ciao")
+                #inserire codice che crea shape conteggio
+            if self.dlg.checkBox_2.isChecked():
+                print("ciao2")
+                #inserire codice che crea shape percentuale
