@@ -5,7 +5,7 @@
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-[![Documentation Builder](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/docs_builder.yml/badge.svg)](https://DINFO-UniFI.github.io/RoofClassify/)
+[![Documentation Builder](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/docs_builder.yml/badge.svg)](https://dinfo-unifi.github.io/RoofClassify/)
 [![Tester](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/tester.yml/badge.svg)](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/tester.yml)
 [![Packager](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/packager.yml/badge.svg)](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/packager.yml)
 [![Releaser](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/release.yml/badge.svg)](https://github.com/DINFO-UniFI/RoofClassify/actions/workflows/release.yml)
@@ -29,7 +29,7 @@ The images for testing this software are big in size and costly, so if problems 
 
 ## Documentation
 
-The technical and user documentation is here: <https://brgm.github.io/gml_application_schema_toolbox/>
+The technical and user documentation is here: <https://dinfo-unifi.github.io/RoofClassify/>
 
 ----
 
