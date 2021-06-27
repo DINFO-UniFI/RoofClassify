@@ -21,20 +21,13 @@ from roof_classify import __about__
 on_rtd = environ.get("READTHEDOCS", None) == "True"
 
 # -- Project information -----------------------------------------------------
-project = __about__.__title__
 author = __about__.__author__
 copyright = __about__.__copyright__
+description = __about__.__summary__
+project = __about__.__title__
 version = release = __about__.__version__
+
 github_doc_root = "{}/tree/master/doc/".format(__about__.__uri_repository__)
-
-myst_substitutions = {
-    "title": project,
-    "author": author,
-    "repo_url": __about__.__uri__,
-    "version": version,
-}
-
-myst_url_schemes = ("http", "https", "mailto")
 
 # -- General configuration ---------------------------------------------------
 
@@ -52,6 +45,8 @@ extensions = [
     # 3rd party
     "myst_parser",
     "sphinx_copybutton",
+    "sphinxext.opengraph",
+    "sphinx_rtd_theme"
 ]
 
 
@@ -84,45 +79,75 @@ pygments_style = "sphinx"
 # -- Theme
 
 html_favicon = (
-    "../roof_classify/resources/roof_classify.png"
+    "../roof_classify/resources/images/icon.png"
 )
 html_logo = (
-    "../roof_classify/resources/roof_classify.png"
+    "../roof_classify/resources/images/icon.png"
 )
 html_static_path = ["static"]
-html_theme = "furo"
-# html_theme_options = {
-#     "github_url": __about__.__uri_repository__,
-#     "repository_url": __about__.__uri_repository__,
-# }
+html_theme = "sphinx_rtd_theme"
+html_theme_options = {
+    "display_version": True,
+    "logo_only": False,
+    "prev_next_buttons_location": "both",
+    "style_external_links": True,
+    "style_nav_header_background": "SteelBlue",
+    # Toc options
+    "collapse_navigation": True,
+    "includehidden": False,
+    "navigation_depth": 4,
+    "sticky_navigation": False,
+    "titles_only": False,
+}
 
+# -- EXTENSIONS --------------------------------------------------------
+# Configuration for intersphinx (refer to others docs).
+intersphinx_mapping = {
+    "PyQt5": ("https://www.riverbankcomputing.com/static/Docs/PyQt5", None),
+    "python": ("https://docs.python.org/3/", None),
+    "qgis": ("https://qgis.org/pyqgis/master/", None),
+}
 
+# MyST Parser
 myst_enable_extensions = [
+    "colon_fence",
     "deflist",
+    "dollarmath",
+    "html_admonition",
     "html_image",
-    "smartquotes",
-    "replacements",
     "linkify",
+    "replacements",
+    "smartquotes",
     "substitution",
 ]
-# -- EXTENSIONS --------------------------------------------------------
 
-# Configuration for intersphinx (refer to others docs).
-intersphinx_mapping = {"python": ("https://docs.python.org/3/", None)}
+myst_substitutions = {
+    "author": author,
+    "date_update": datetime.now().strftime("%d %B %Y"),
+    "description": description,
+    "qgis_version_max": __about__.__plugin_md__.get("general").get(
+        "qgismaximumversion"
+    ),
+    "qgis_version_min": __about__.__plugin_md__.get("general").get(
+        "qgisminimumversion"
+    ),
+    "repo_url": __about__.__uri__,
+    "title": project,
+    "version": version,
+}
 
-# -- Options for Sphinx API doc ----------------------------------------------
+myst_url_schemes = ("http", "https", "mailto")
 
-# run api doc
-def run_apidoc(_):
-    from sphinx.ext.apidoc import main
-
-    cur_dir = path.normpath(path.dirname(__file__))
-    output_path = path.join(cur_dir, "_apidoc")
-    modules = str(__about__.DIR_PLUGIN_ROOT.resolve())
-    exclusions = ["../.venv", "../.github", "../tests"]
-    main(["-e", "-f", "-M", "-o", output_path, modules] + exclusions)
-
-
-# launch setup
-def setup(app):
-    app.connect("builder-inited", run_apidoc)
+# OpenGraph
+ogp_image = (
+    f"{__about__.__uri_homepage__}_static/gui_form_classification.png"
+)
+ogp_site_name = project
+ogp_site_url = __about__.__uri_homepage__
+ogp_custom_meta_tags = [
+    "<meta name='twitter:card' content='summary_large_image'>",
+    f'<meta property="twitter:description" content="{description}" />',
+    f'<meta property="twitter:image" content="{ogp_image}" />',
+    '<meta property="twitter:site" content="@geotribu" />',
+    f'<meta property="twitter:title" content="{project}" />',
+]
