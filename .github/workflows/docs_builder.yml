@@ -2,7 +2,7 @@ name: "📚 Documentation Builder"
 
 on:
   push:
-    branches: [main]
+    branches: [ master ]
     paths:
       - 'docs/**/*'
       - '.github/workflows/docs_builder.yml'
