@@ -4,4 +4,5 @@
 # python -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
 # -----------------------
 
+joblib>=0.11
 scikit-learn==0.24.*
