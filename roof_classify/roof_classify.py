@@ -34,15 +34,8 @@ from osgeo import gdal
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
-
-try:
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.svm import SVC
-except ModuleNotFoundError:
-    from roof_classify.embedded_external_libs.sklearn.ensemble import (
-        RandomForestClassifier,
-    )
-    from roof_classify.embedded_external_libs.sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 
 # Import the code for the dialog
 from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
