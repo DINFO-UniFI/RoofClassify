@@ -34,14 +34,18 @@ import resources
 #IMPORT PER CLASSIFICATORE
 import shapefile
 from osgeo import gdal
-from PyQt4.QtCore import QCoreApplication, QSettings, QTranslator, qVersion
-from PyQt4.QtGui import QAction, QFileDialog, QIcon
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
-# Import the code for the dialog
-from roof_classify_dialog import RoofClassifyDialog
-from sklearn import metrics
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
+try:
+    from roof_classify.embedded_external_libs.sklearn.ensemble import (
+        RandomForestClassifier,
+    )
+    from roof_classify.embedded_external_libs.sklearn.svm import SVC
+except Exception:
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.svm import SVC
 
 from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
 from roof_classify.toolbelt import PlgLogger
