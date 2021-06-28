@@ -46,7 +46,7 @@ extensions = [
     "myst_parser",
     "sphinx_copybutton",
     "sphinxext.opengraph",
-    "sphinx_rtd_theme"
+    "sphinx_rtd_theme",
 ]
 
 
@@ -78,12 +78,8 @@ pygments_style = "sphinx"
 
 # -- Theme
 
-html_favicon = (
-    "../roof_classify/resources/images/icon.png"
-)
-html_logo = (
-    "../roof_classify/resources/images/icon.png"
-)
+html_favicon = "../roof_classify/resources/images/icon.png"
+html_logo = "../roof_classify/resources/images/icon.png"
 html_static_path = ["static"]
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
@@ -139,9 +135,7 @@ myst_substitutions = {
 myst_url_schemes = ("http", "https", "mailto")
 
 # OpenGraph
-ogp_image = (
-    f"{__about__.__uri_homepage__}_static/gui_form_classification.png"
-)
+ogp_image = f"{__about__.__uri_homepage__}_static/gui_form_classification.png"
 ogp_site_name = project
 ogp_site_url = __about__.__uri_homepage__
 ogp_custom_meta_tags = [
