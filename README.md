@@ -14,14 +14,7 @@ A QGIS tool that is conceived for automatically identifying buildings with asbes
 
 ## Dependencies
 
-This plugin requires:
-
-- The Python Shapefile Library (PyShp)
-  - `pip install pyshp`
-- scikit-learn
-  - `pip install sklearn`
-
-
+This plugin requires scikit-learn: `pip install sklearn`.
 
 ## NOTES
 
@@ -31,7 +24,7 @@ The images for testing this software are big in size and costly, so if problems 
 
 The technical and user documentation is here: <https://dinfo-unifi.github.io/RoofClassify/>
 
-----
+---
 
 ## License
 
