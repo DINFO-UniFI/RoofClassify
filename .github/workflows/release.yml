@@ -37,6 +37,7 @@ jobs:
       run: |
         python -m pip install -U pip setuptools wheel
         python -m pip install -U -r requirements/packaging.txt
+        python -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
 
     - name: Compile translations
       run: lrelease roof_classify/resources/i18n/*.ts
