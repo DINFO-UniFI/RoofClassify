@@ -19,27 +19,24 @@
  *                                                                         *
  ***************************************************************************/
 """
+
+# standard
 import glob
 import os
 import os.path
 import subprocess
-import time
-from subprocess import call
 
+# 3rd party
 import numpy as np
 
 # Initialize Qt resources from file resources.py
-import resources
-
-#IMPORT PER CLASSIFICATORE
-import shapefile
 from osgeo import gdal
-from PyQt4.QtCore import QCoreApplication, QSettings, QTranslator, qVersion
-from PyQt4.QtGui import QAction, QFileDialog, QIcon
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 # Import the code for the dialog
 from roof_classify_dialog import RoofClassifyDialog
-from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
@@ -107,9 +104,6 @@ class RoofClassify:
             self.translator = QTranslator()
             self.translator.load(locale_path)
 
-            if qVersion() > '4.3.3':
-                QCoreApplication.installTranslator(self.translator)
-
         # Create the dialog (after translation) and keep reference
 
         self.dlg = RoofClassifyDialog()
@@ -133,7 +127,6 @@ class RoofClassify:
         self.dlg.lineEdit_4.clear()
         self.dlg.pushButton_4.clicked.connect(self.select_output_folder)
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
 
