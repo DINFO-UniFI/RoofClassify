@@ -148,8 +148,7 @@ class RoofClassify:
         :returns: Translated version of message.
         :rtype: QString
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('RoofClassify', message)
+        return QCoreApplication.translate(__title__, message)
 
 
     def add_action(
