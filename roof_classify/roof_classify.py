@@ -123,10 +123,9 @@ class RoofClassify:
         # Declare instance attributes
         self.actions = []
 
-        self.menu = self.tr(u'&RoofClassify')
-        # TODO: We are going to let the user set this up in a future iteration
-        self.toolbar = self.iface.addToolBar(u'RoofClassify')
-        self.toolbar.setObjectName(u'RoofClassify')
+        self.menu = self.tr(__title__)
+        self.toolbar = self.iface.addToolBar(__title__)
+        self.toolbar.setObjectName(__title__)
 
         self.dlg.lineEdit.clear()
         self.dlg.pushButton.clicked.connect(self.select_raster)
@@ -203,7 +202,7 @@ class RoofClassify:
         :rtype: QAction
         """
 
-        icon = QIcon(icon_path)          #cambiare icon_path se si vuole cambiare l'icona del plugin
+        icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
         action.triggered.connect(callback)
         action.setEnabled(enabled_flag)
@@ -229,7 +228,7 @@ class RoofClassify:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/RoofClassify/icon.png'
+        icon_path = str(DIR_PLUGIN_ROOT / "resources/images/icon.png")
         self.add_action(
             icon_path,
             text=self.tr(u'classify roofs'),
