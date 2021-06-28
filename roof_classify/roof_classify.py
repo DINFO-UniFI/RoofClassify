@@ -40,6 +40,9 @@ from roof_classify_dialog import RoofClassifyDialog
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
+from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
+from roof_classify.toolbelt import PlgLogger
+
 #creo un set di colori pseudocasuali da usare poi nella classificazione
 COLORS = [
     "#000000", "#FFFF00", "#1CE6FF", "#FF34FF", "#FF4A46", "#008941", "#006FA6", "#A30059",
@@ -91,6 +94,7 @@ class RoofClassify:
         """
         # Save reference to the QGIS interface
         self.iface = iface
+        self.log = PlgLogger().log
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
@@ -113,10 +117,9 @@ class RoofClassify:
         # Declare instance attributes
         self.actions = []
 
-        self.menu = self.tr(u'&RoofClassify')
-        # TODO: We are going to let the user set this up in a future iteration
-        self.toolbar = self.iface.addToolBar(u'RoofClassify')
-        self.toolbar.setObjectName(u'RoofClassify')
+        self.menu = __title__
+        self.toolbar = self.iface.addToolBar(__title__)
+        self.toolbar.setObjectName(__title__)
 
         self.dlg.lineEdit.clear()
         self.dlg.pushButton.clicked.connect(self.select_raster)
@@ -138,8 +141,7 @@ class RoofClassify:
         :returns: Translated version of message.
         :rtype: QString
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('RoofClassify', message)
+        return QCoreApplication.translate(__title__, message)
 
 
     def add_action(
@@ -192,7 +194,7 @@ class RoofClassify:
         :rtype: QAction
         """
 
-        icon = QIcon(icon_path)          #cambiare icon_path se si vuole cambiare l'icona del plugin
+        icon = QIcon(icon_path)
         action = QAction(icon, text, parent)
         action.triggered.connect(callback)
         action.setEnabled(enabled_flag)
@@ -218,7 +220,7 @@ class RoofClassify:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/RoofClassify/icon.png'
+        icon_path = str(DIR_PLUGIN_ROOT / "resources/images/icon.png")
         self.add_action(
             icon_path,
             text=self.tr(u'classify roofs'),
@@ -230,7 +232,7 @@ class RoofClassify:
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&RoofClassify'),
+                __title__,
                 action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
@@ -290,7 +292,7 @@ class RoofClassify:
                 """
                 data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
                 if data_source is None:
-                    report_and_exit("File read failed: %s", vector_data_path)
+                    self.log(message=f"File read failed: {vector_data_path}", log_level=2, push=True)
                 layer = data_source.GetLayer(0)
                 driver = gdal.GetDriverByName(dataset_format)
                 target_ds = driver.Create(output_fname, cols, rows, 1, gdal.GDT_UInt16)
@@ -375,15 +377,15 @@ class RoofClassify:
 
 
 
-            print(self.dlg.lineEdit.text())
-            print(self.dlg.lineEdit_2.text())
+            self.log(self.dlg.lineEdit.text())
+            self.log(self.dlg.lineEdit_2.text())
             #rasterIn=self.dlg.lineEdit.text()
             directory_raster=self.dlg.lineEdit.text()
             directory_shape=self.dlg.lineEdit_2.text()
             raster_training=self.dlg.lineEdit_3.text()
             #log = open("D:/AMIANTO/output/log.txt", "w")
             os.chdir(directory_raster)
-            print(raster_training)
+            self.log(raster_training)
             #log.write(time.strftime("%Y-%m-%d %H:%M"))
             #log.write("caricamento training set..\n")
             out_folder=self.dlg.lineEdit_4.text()
@@ -395,11 +397,11 @@ class RoofClassify:
 
             nnn=1
             for file in glob.glob("*.tif"):
-                print(file)
+                self.log(file)
                 #raster_dataset2 = gdal.Open("C:/Users/Alessandro/Desktop/11-10/ViaToscanaTestRitagliato.tif", gdal.GA_ReadOnly)
 
                 x=directory_raster+'/'+file
-                print(x)
+                self.log(x)
                 raster_dataset2 = gdal.Open(x, gdal.GA_ReadOnly)
 
 
@@ -437,7 +439,7 @@ class RoofClassify:
                 files = [f for f in os.listdir(directory_shape) if f.endswith('.shp')]
 
                 classes = [f.split('.')[0] for f in files]
-                print(classes)
+                self.log(str(classes))
                 shapefiles = [os.path.join(directory_shape, f) for f in files if f.endswith('.shp')]
                 labeled_pixels = vectors_to_raster(shapefiles, rows, cols, geo_transform, proj)
                 is_train = np.nonzero(labeled_pixels)
@@ -463,7 +465,7 @@ class RoofClassify:
                 classification = result.reshape((rows2, cols2))
                 file=file.replace(".tif","")
                 name=out_folder+"\\"+file+"_classificato.tif"
-                print(name)
+                self.log(name)
                 write_geotiff(name, classification, geo_transform2, proj2)
                 nnn=nnn+1
                 nomi = nomi + " " + name
@@ -474,8 +476,8 @@ class RoofClassify:
                 subprocess.call("gdal_merge.bat -ot UInt16 -pct -o "+dove+" -of GTiff " + nomi)
 
             if self.dlg.checkBox.isChecked():
-                print("ciao")
+                self.log("ciao")
                 #inserire codice che crea shape conteggio
             if self.dlg.checkBox_2.isChecked():
-                print("ciao2")
+                self.log("ciao2")
                 #inserire codice che crea shape percentuale
