@@ -1,5 +1,7 @@
-# Develoment dependencies
-# -----------------------
+# Development dependencies
+# ------------------------
+
+-r base.txt
 
 black
 flake8>=3.8,<3.10
