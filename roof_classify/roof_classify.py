@@ -43,6 +43,9 @@ from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
+from roof_classify.toolbelt import PlgLogger
+from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
+
 #creo un set di colori pseudocasuali da usare poi nella classificazione
 COLORS = [
     "#000000", "#FFFF00", "#1CE6FF", "#FF34FF", "#FF4A46", "#008941", "#006FA6", "#A30059",
@@ -94,6 +97,7 @@ class RoofClassify:
         """
         # Save reference to the QGIS interface
         self.iface = iface
+        self.log = PlgLogger().log
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
@@ -297,7 +301,7 @@ class RoofClassify:
                 """
                 data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
                 if data_source is None:
-                    report_and_exit("File read failed: %s", vector_data_path)
+                    self.log(message=f"File read failed: {vector_data_path}", log_level=2, push=True)
                 layer = data_source.GetLayer(0)
                 driver = gdal.GetDriverByName(dataset_format)
                 target_ds = driver.Create(output_fname, cols, rows, 1, gdal.GDT_UInt16)

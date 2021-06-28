@@ -8,8 +8,8 @@ from qgis.core import QgsMessageLog
 from qgis.utils import iface
 
 # project package
-import french_locator_filter.toolbelt.preferences as plg_prefs_hdlr
-from french_locator_filter.__about__ import __title__
+import roof_classify.toolbelt.preferences as plg_prefs_hdlr
+from roof_classify.__about__ import __title__
 
 # ############################################################################
 # ########## Classes ###############
