@@ -438,6 +438,16 @@ class RoofClassify:
             b = int(color_hex[5:7], 16)
             pct.SetColorEntry(classLabel, (r, g, b, 255))
         img.SetColorTable(pct)
+        # Add metadata to the first image
+        metadata = {
+            "TIFFTAG_COPYRIGHT": "CC BY 4.0",
+            "TIFFTAG_DOCUMENTNAME": "classification",
+            "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
+            "TIFFTAG_MAXSAMPLEVALUE": str(roofTypesNumber),
+            "TIFFTAG_MINSAMPLEVALUE": "0",
+            "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
+        }
+        img.SetMetaData(metadata)
         mergeParams = {
             "DATA_TYPE": 2,  # UInt16 encoded output
             "EXTRA": "",
