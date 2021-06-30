@@ -513,51 +513,6 @@ class RoofClassify:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-
-            def write_geotiff(
-                fname, data, geo_transform, projection, data_type=gdal.GDT_Byte
-            ):
-                """
-                Create a GeoTIFF file with the given data.
-                :param fname: Path to a directory with shapefiles
-                :param data: Number of rows of the result
-                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-                                      transforming between pixel/line (P,L) raster space, and projection
-                                      coordinates (Xp,Yp) space.
-                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-                """
-                driver = gdal.GetDriverByName("GTiff")
-                rows, cols = data.shape
-                dataset = driver.Create(fname, cols, rows, 1, data_type)
-                dataset.SetGeoTransform(geo_transform)
-                dataset.SetProjection(projection)
-                band = dataset.GetRasterBand(1)
-                band.WriteArray(data)
-
-                files = [f for f in os.listdir(directory_shape) if f.endswith(".shp")]
-                classes = [f.split(".")[0] for f in files]
-                ct = gdal.ColorTable()
-                for pixel_value in range(len(classes) + 1):
-                    color_hex = COLORS[pixel_value]
-                    r = int(color_hex[1:3], 16)
-                    g = int(color_hex[3:5], 16)
-                    b = int(color_hex[5:7], 16)
-                    ct.SetColorEntry(pixel_value, (r, g, b, 255))
-                band.SetColorTable(ct)
-
-                metadata = {
-                    "TIFFTAG_COPYRIGHT": "CC BY 4.0",
-                    "TIFFTAG_DOCUMENTNAME": "classification",
-                    "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
-                    "TIFFTAG_MAXSAMPLEVALUE": str(len(classes)),
-                    "TIFFTAG_MINSAMPLEVALUE": "0",
-                    "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
-                }
-                dataset.SetMetadata(metadata)
-
-                dataset = None  # Close the file
-                return
-
             self.log(self.dlg.lineEdit.text())
             self.log(self.dlg.lineEdit_2.text())
             # rasterIn=self.dlg.lineEdit.text()
