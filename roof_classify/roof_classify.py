@@ -382,7 +382,7 @@ class RoofClassify:
         The image pixels which account for the vector elements are labelled with the input class number value.
         The output image dimension is the same as the image raster to be classified.
         This function will be run to rasterize roofing layers.
-        We assume that both raster and vector layers has the same SCR.
+        We assume that both raster and vector layers have the same SCR.
 
         :param vectorFilepath: Path to vector layer
         :type vectorFilepath: str
@@ -410,9 +410,28 @@ class RoofClassify:
         return rasterizedRoofing["OUTPUT"]
 
     def labellingRoofingRaster(roofingShapefileDir, rasterFilepath):
+        """Generating a raster in which all the roofs are labelled by type.
+
+        :param roofingShapefileDir: Roofing layers directory (one shapefile per type of roof)
+        :type roofingShapefileDir: str
+        :param rasterFilepath: Filepath of the raster image to be classified
+        :type rasterFilepath: str
+        :return: A raster image in which the roofs are labelled according to their type.
+        :rtype: np.array
+        """
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
-        labelledPixel = np.zeros((rlayer.width(), rlayer.height()))
-        return labelledPixel
+        # The output image has the same dimension as the input raster layer
+        labelledImg = np.zeros((rlayer.width(), rlayer.height()))
+        for classLabel, roofVectorFilepath in enumerate(roofingShapefileDir, start=1):
+            tempRasterFile = RoofClassify.rasterizeRoofingLayer(
+                roofVectorFilepath, rasterFilepath, classLabel
+            )
+            # Read the roof rasterized file, and convert the first raster band into a numpy array
+            roofLabelledRaster = (
+                gdal.Open(tempRasterFile).GetRasterBand(1).ReadAsArray()
+            )
+            labelledImg += roofLabelledRaster
+        return labelledImg
 
     def run(self):
         """Run method that performs all the real work"""
