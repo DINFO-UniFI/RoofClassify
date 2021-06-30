@@ -427,6 +427,30 @@ class RoofClassify:
             labelledImg += roofLabelledRaster
         return labelledImg
 
+    def write2Geotiff(classifiedImgList, roofTypesNumber, outputFilepath):
+        # Create a pseudo-color table for the first image
+        img = gdal.Open(classifiedImgList[0]).GetRasterBand(1)
+        pct = gdal.ColorTable()
+        for classLabel in range(roofTypesNumber + 1):
+            color_hex = COLORS[classLabel]
+            r = int(color_hex[1:3], 16)
+            g = int(color_hex[3:5], 16)
+            b = int(color_hex[5:7], 16)
+            pct.SetColorEntry(classLabel, (r, g, b, 255))
+        img.SetColorTable(pct)
+        mergeParams = {
+            "DATA_TYPE": 2,  # UInt16 encoded output
+            "EXTRA": "",
+            "INPUT": classifiedImgList,
+            "NODATA_INPUT": None,
+            "NODATA_OUTPUT": None,
+            "OPTIONS": "",
+            "OUTPUT": outputFilepath,
+            "PCT": True,  # Grab a pseudo-color table from the first input image
+            "SEPARATE": False,
+        }
+        processing.run("gdal:merge", mergeParams)
+
     def run(self):
         """Run method that performs all the real work"""
         # show the dialog
