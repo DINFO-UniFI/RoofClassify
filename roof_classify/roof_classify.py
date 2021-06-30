@@ -474,6 +474,28 @@ class RoofClassify:
         rlayer = QgsRasterLayer(outputImgfilepath, "classifiedImg")
         return rlayer
 
+    def mergeRasterLayers(rasterLayerList, outputDirectory):
+        """Merging classified images into one image. The merged image is saved under the name
+        'merged_classification.tif'.
+
+        :param rasterLayerList: List of classified images
+        :type rasterLayerList: list<QgsRasterLayer>
+        :param outputDirectory: output directory
+        :type outputDirectory: str
+        """
+        mergeParams = {
+            "DATA_TYPE": 2,  # UInt16 encoded output
+            "EXTRA": "",
+            "INPUT": rasterLayerList,
+            "NODATA_INPUT": None,
+            "NODATA_OUTPUT": None,
+            "OPTIONS": "",
+            "OUTPUT": f"{outputDirectory}merged_classification.tif",
+            "PCT": True,  # Grab a pseudo-color table from the first input image
+            "SEPARATE": False,
+        }
+        processing.run("gdal:merge", mergeParams)
+
     def run(self):
         """Run method that performs all the real work"""
         # show the dialog
