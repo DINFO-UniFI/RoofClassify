@@ -25,6 +25,7 @@ import glob
 import os
 import os.path
 import subprocess
+from pathlib import Path
 
 # 3rd party
 import numpy as np
@@ -412,7 +413,7 @@ class RoofClassify:
     def labellingRoofingRaster(roofingShapefileDir, rasterFilepath):
         """Generating a raster in which all the roofs are labelled by type.
 
-        :param roofingShapefileDir: Roofing layers directory (one shapefile per type of roof)
+        :param roofingShapefileDir: Roofing layers directory (it contains one shapefile per type of roof)
         :type roofingShapefileDir: str
         :param rasterFilepath: Filepath of the raster image to be classified
         :type rasterFilepath: str
@@ -422,7 +423,10 @@ class RoofClassify:
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
         # The output image has the same dimension as the input raster layer
         labelledImg = np.zeros((rlayer.width(), rlayer.height()))
-        for classLabel, roofVectorFilepath in enumerate(roofingShapefileDir, start=1):
+
+        shpFolder = Path(roofingShapefileDir).rglob("*.shp")
+        files = [x for x in shpFolder]
+        for classLabel, roofVectorFilepath in enumerate(files, start=1):
             tempRasterFile = RoofClassify.rasterizeRoofingLayer(
                 roofVectorFilepath, rasterFilepath, classLabel
             )
@@ -570,7 +574,6 @@ class RoofClassify:
             nnn = 1
             for file in glob.glob("*.tif"):
                 self.log(file)
-                # raster_dataset2 = gdal.Open("C:/Users/Alessandro/Desktop/11-10/ViaToscanaTestRitagliato.tif", gdal.GA_ReadOnly)
 
                 x = directory_raster + "/" + file
                 self.log(x)
@@ -599,20 +602,11 @@ class RoofClassify:
                 bands_data = np.dstack(bands_data)
                 rows, cols, n_bands = bands_data.shape
 
-                # A sample is a vector with all the bands data. Each pixel (independent of its position) is a
-                # sample.
-                files = [f for f in os.listdir(directory_shape) if f.endswith(".shp")]
-
-                classes = [f.split(".")[0] for f in files]
-                self.log(str(classes))
-                shapefiles = [
-                    os.path.join(directory_shape, f)
-                    for f in files
-                    if f.endswith(".shp")
-                ]
-                labeled_pixels = vectors_to_raster(
-                    shapefiles, rows, cols, geo_transform, proj
+                # Labelling the training image
+                labeled_pixels = RoofClassify.labellingRoofingRaster(
+                    directory_shape, raster_training
                 )
+
                 is_train = np.nonzero(labeled_pixels)
                 training_labels = labeled_pixels[is_train]
                 training_samples = bands_data[is_train]
