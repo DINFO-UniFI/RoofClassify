@@ -411,7 +411,7 @@ class RoofClassify:
 
     def labellingRoofingRaster(roofingShapefileDir, rasterFilepath):
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
-        labelledPixel = np.zeros((rlayer.width(), cols))
+        labelledPixel = np.zeros((rlayer.width(), rlayer.height()))
         return labelledPixel
 
     def run(self):
@@ -582,7 +582,6 @@ class RoofClassify:
 
                 # A sample is a vector with all the bands data. Each pixel (independent of its position) is a
                 # sample.
-                n_samples = rows * cols
                 files = [f for f in os.listdir(directory_shape) if f.endswith(".shp")]
 
                 classes = [f.split(".")[0] for f in files]
