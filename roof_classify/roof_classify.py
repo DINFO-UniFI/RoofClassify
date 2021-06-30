@@ -456,6 +456,8 @@ class RoofClassify:
                 band = dataset.GetRasterBand(1)
                 band.WriteArray(data)
 
+                files = [f for f in os.listdir(directory_shape) if f.endswith(".shp")]
+                classes = [f.split(".")[0] for f in files]
                 ct = gdal.ColorTable()
                 for pixel_value in range(len(classes) + 1):
                     color_hex = COLORS[pixel_value]
@@ -514,8 +516,7 @@ class RoofClassify:
                 n_samples2 = rows2 * cols2
 
                 raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
-                geo_transform = raster_dataset.GetGeoTransform()
-                proj = raster_dataset.GetProjectionRef()
+
                 bands_data = []
                 for b in range(1, raster_dataset.RasterCount + 1):
                     band = raster_dataset.GetRasterBand(b)
