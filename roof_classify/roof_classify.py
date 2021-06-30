@@ -190,16 +190,6 @@ COLORS = [
 ]
 
 
-def calcolaMedia(mat, i, dim):
-    num_val = 0
-    somma = 0
-    for j in range(dim - 1):
-        if mat[j, i] != 0:
-            num_val = num_val + 1
-            somma = somma + mat[j, i]
-    return somma / num_val, num_val
-
-
 class RoofClassify:
     """QGIS Plugin Implementation."""
 
@@ -445,74 +435,6 @@ class RoofClassify:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-
-            # da qui inizia l'esecuzione del plugin una volta che si preme OK
-
-            # serve per rasterizzare un vettore. Ritorna un gdal.Dataset.
-            def create_mask_from_vector(
-                vector_data_path,
-                cols,
-                rows,
-                geo_transform,
-                projection,
-                target_value=1,
-                output_fname="",
-                dataset_format="MEM",
-            ):
-                """
-                :param vector_data_path: Path ad un shapefile
-                :param cols: Numero di colonne del risultato
-                :param rows: Numero di righe del risultato
-                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-                                      transforming between pixel/line (P,L) raster space, and projection
-                                      coordinates (Xp,Yp) space.
-                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-                :param target_value: Pixel value for the pixels. Must be a valid gdal.GDT_UInt16 value.
-                :param output_fname: If the dataset_format is GeoTIFF, this is the output file name
-                :param dataset_format: The gdal.Dataset driver name. [default: MEM]
-                """
-                data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
-                if data_source is None:
-                    self.log(
-                        message=f"File read failed: {vector_data_path}",
-                        log_level=2,
-                        push=True,
-                    )
-                layer = data_source.GetLayer(0)
-                driver = gdal.GetDriverByName(dataset_format)
-                target_ds = driver.Create(output_fname, cols, rows, 1, gdal.GDT_UInt16)
-                target_ds.SetGeoTransform(geo_transform)
-                target_ds.SetProjection(projection)
-                gdal.RasterizeLayer(target_ds, [1], layer, burn_values=[target_value])
-                return target_ds
-
-            def vectors_to_raster(file_paths, rows, cols, geo_transform, projection):
-                """
-                Rasterize, in a single image, all the vectors in the given directory.
-                The data of each file will be assigned the same pixel value. This value is defined by the order
-                of the file in file_paths, starting with 1: so the points/poligons/etc in the same file will be
-                marked as 1, those in the second file will be 2, and so on.
-                :param file_paths: Path to a directory with shapefiles
-                :param rows: Number of rows of the result
-                :param cols: Number of columns of the result
-                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-                                      transforming between pixel/line (P,L) raster space, and projection
-                                      coordinates (Xp,Yp) space.
-                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-                """
-                labeled_pixels = np.zeros((rows, cols))
-                for i, path in enumerate(file_paths):
-                    label = i + 1
-
-                    ds = create_mask_from_vector(
-                        path, cols, rows, geo_transform, projection, target_value=label
-                    )
-                    band = ds.GetRasterBand(1)
-                    a = band.ReadAsArray()
-
-                    labeled_pixels += a
-                    ds = None
-                return labeled_pixels
 
             def write_geotiff(
                 fname, data, geo_transform, projection, data_type=gdal.GDT_Byte
