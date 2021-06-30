@@ -368,6 +368,16 @@ class RoofClassify:
         )
         self.dlg.lineEdit_4.setText(out_folder)
 
+    def getNumberofClasses(self):
+        """
+
+        :return: Get the number of classes (i.e. number of roof types)
+        :rtype: int
+        """
+        roofingShapefileDir = self.dlg.lineEdit_2.text()
+        shpFolder = Path(roofingShapefileDir).rglob("*.shp")
+        return len(shpFolder)
+
     def rasterizeRoofingLayer(vectorFilepath, rasterFilepath, classNumber):
         """Rasterizing a vector layer into a raster layer.
         The image pixels which account for the vector elements are labelled with the input class number value.
@@ -565,6 +575,7 @@ class RoofClassify:
             nomi = ""
 
             nnn = 1
+            classifiedImages = []
             for file in glob.glob("*.tif"):
                 self.log(file)
 
@@ -624,19 +635,10 @@ class RoofClassify:
                 file = file.replace(".tif", "")
                 name = out_folder + "\\" + file + "_classificato.tif"
                 self.log(name)
-                write_geotiff(name, classification, geo_transform2, proj2)
-                nnn = nnn + 1
-                nomi = nomi + " " + name
-
-            if nnn > 2:
-                dove = "D:/risultato/ClassificataUnita.tif"
-                subprocess.call(
-                    "gdal_merge.bat -ot UInt16 -pct -o " + dove + " -of GTiff " + nomi
+                # Write the image array into a QgsRasterLayer
+                rasterOutput = RoofClassify.writeGeotiff(
+                    x, classification, self.getNumberofClasses(), name
                 )
+                classifiedImages.append(rasterOutput)
 
-            if self.dlg.checkBox.isChecked():
-                self.log("ciao")
-                # inserire codice che crea shape conteggio
-            if self.dlg.checkBox_2.isChecked():
-                self.log("ciao2")
-                # inserire codice che crea shape percentuale
+            RoofClassify.mergeRasterLayers(classifiedImages, out_folder)
