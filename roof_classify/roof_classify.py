@@ -31,6 +31,8 @@ import numpy as np
 
 # Initialize Qt resources from file resources.py
 from osgeo import gdal
+from qgis import processing
+from qgis.core import QgsVectorLayer, QgsRasterLayer
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
