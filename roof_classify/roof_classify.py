@@ -427,9 +427,31 @@ class RoofClassify:
             labelledImg += roofLabelledRaster
         return labelledImg
 
-    def write2Geotiff(classifiedImgList, roofTypesNumber, outputFilepath):
-        # Create a pseudo-color table for the first image
-        img = gdal.Open(classifiedImgList[0]).GetRasterBand(1)
+    def writeGeotiff(inputImgFile, classifiedImg, roofTypesNumber, outputImgfilepath):
+        """Write an numpy array image into a geotiff image.
+
+        :param inputImgFile: Filepath of the input raster image before classification.
+                            Its spatial properties will be copied into the output geotiff image.
+        :type inputImgFile: str
+        :param classifiedImg: Classified image
+        :type classifiedImg: numpy.array
+        :param roofTypesNumber: Number of classes i.e. number of roof types used in the classification
+        :type roofTypesNumber: int
+        :param outputImgfilepath: Filepath of the output geotiff image
+        :type outputImgfilepath: str
+        :return: Converted raster into geotiff image
+        :rtype: QgsRasterLayer
+        """
+        inputRaster = gdal.Open(inputImgFile, gdal.GA_ReadOnly)
+        driver = gdal.GetDriverByName("GTiff")
+        rows, cols = classifiedImg.shape
+        dataset = driver.Create(outputImgfilepath, cols, rows, 1, gdal.GDT_Byte)
+        dataset.SetGeoTransform(inputRaster.GetGeoTransform())
+        dataset.SetProjection(inputRaster.GetProjectionRef())
+        band = dataset.GetRasterBand(1)
+        band.WriteArray(classifiedImg)
+
+        # Create a pseudo-color table for the first band
         pct = gdal.ColorTable()
         for classLabel in range(roofTypesNumber + 1):
             color_hex = COLORS[classLabel]
@@ -437,7 +459,8 @@ class RoofClassify:
             g = int(color_hex[3:5], 16)
             b = int(color_hex[5:7], 16)
             pct.SetColorEntry(classLabel, (r, g, b, 255))
-        img.SetColorTable(pct)
+        band.SetColorTable(pct)
+
         # Add metadata to the first image
         metadata = {
             "TIFFTAG_COPYRIGHT": "CC BY 4.0",
@@ -447,19 +470,9 @@ class RoofClassify:
             "TIFFTAG_MINSAMPLEVALUE": "0",
             "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
         }
-        img.SetMetaData(metadata)
-        mergeParams = {
-            "DATA_TYPE": 2,  # UInt16 encoded output
-            "EXTRA": "",
-            "INPUT": classifiedImgList,
-            "NODATA_INPUT": None,
-            "NODATA_OUTPUT": None,
-            "OPTIONS": "",
-            "OUTPUT": outputFilepath,
-            "PCT": True,  # Grab a pseudo-color table from the first input image
-            "SEPARATE": False,
-        }
-        processing.run("gdal:merge", mergeParams)
+        dataset.SetMetaData(metadata)
+        rlayer = QgsRasterLayer(outputImgfilepath, "classifiedImg")
+        return rlayer
 
     def run(self):
         """Run method that performs all the real work"""
