@@ -24,7 +24,6 @@
 import glob
 import os
 import os.path
-import subprocess
 from pathlib import Path
 
 # 3rd party
@@ -572,9 +571,6 @@ class RoofClassify:
             # log.write("caricamento training set..\n")
             out_folder = self.dlg.lineEdit_4.text()
 
-            nomi = ""
-
-            nnn = 1
             classifiedImages = []
             for file in glob.glob("*.tif"):
                 self.log(file)
@@ -582,10 +578,6 @@ class RoofClassify:
                 x = directory_raster + "/" + file
                 self.log(x)
                 raster_dataset2 = gdal.Open(x, gdal.GA_ReadOnly)
-
-                geo_transform2 = raster_dataset2.GetGeoTransform()
-
-                proj2 = raster_dataset2.GetProjectionRef()
                 bands_data2 = []
                 for b in range(1, raster_dataset2.RasterCount + 1):
                     band2 = raster_dataset2.GetRasterBand(b)
