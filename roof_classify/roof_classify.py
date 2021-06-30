@@ -32,7 +32,7 @@ import numpy as np
 # Initialize Qt resources from file resources.py
 from osgeo import gdal
 from qgis import processing
-from qgis.core import QgsVectorLayer, QgsRasterLayer
+from qgis.core import QgsRasterLayer, QgsVectorLayer
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
@@ -378,41 +378,42 @@ class RoofClassify:
         self.dlg.lineEdit_4.setText(out_folder)
 
     def rasterizeRoofingLayer(vectorFilepath, rasterFilepath, classNumber):
-        """Rasterizing a vector layer into a raster layer. 
+        """Rasterizing a vector layer into a raster layer.
         The image pixels which account for the vector elements are labelled with the input class number value.
-        The output image dimension is the same as the image raster to be classified. 
+        The output image dimension is the same as the image raster to be classified.
         This function will be run to rasterize roofing layers.
         We assume that both raster and vector layers has the same SCR.
 
         :param vectorFilepath: Path to vector layer
         :type vectorFilepath: str
-        :param classNumber: The value that will account for each rasterized element. 
+        :param classNumber: The value that will account for each rasterized element.
                             For instance, if classNumber = 5, then the rasterized elements
-                            cells of the output output will value 5. 
+                            cells of the output output will value 5.
         :type classNumber: int
         :return: Rasterized roofing filepath.
         :rtype: str
         """
-        
+
         vlayer = QgsVectorLayer(vectorFilepath, "roofing", "ogr")
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
-        params = {'INPUT': vlayer, 
-                'BURN': classNumber, 
-                'UNITS': 1 # Georeferecend pixels, 
-                'DATA_TYPE': 2, # UInt16 data type
-                'WIDTH': rlayer.rasterUnitsPerPixelX(), # Using input raster resolution
-                'HEIGHT': rlayer.rasterUnitsPerPixelY(), 
-                'EXTENT': rlayer.id(), 
-                'OUTPUT': 'TEMPORARY_OUTPUT'}
+        params = {
+            "INPUT": vlayer,
+            "BURN": classNumber,
+            "UNITS": 1,  # Georeferecend pixels,
+            "DATA_TYPE": 2,  # UInt16 data type
+            "WIDTH": rlayer.rasterUnitsPerPixelX(),  # Using input raster resolution
+            "HEIGHT": rlayer.rasterUnitsPerPixelY(),
+            "EXTENT": rlayer.id(),
+            "OUTPUT": "TEMPORARY_OUTPUT",
+        }
         rasterizedRoofing = processing.run("gdal:rasterize", params)
-        return rasterizedRoofing['OUTPUT']
+        return rasterizedRoofing["OUTPUT"]
 
     def labellingRoofingRaster(roofingShapefileDir, rasterFilepath):
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
         labelledPixel = np.zeros((rlayer.width(), cols))
         return labelledPixel
 
-    
     def run(self):
         """Run method that performs all the real work"""
         # show the dialog
