@@ -375,7 +375,8 @@ class RoofClassify:
         """
         roofingShapefileDir = self.dlg.lineEdit_2.text()
         shpFolder = Path(roofingShapefileDir).rglob("*.shp")
-        return len(shpFolder)
+        files = [shp for shp in shpFolder]
+        return len(files)
 
     def rasterizeRoofingLayer(vectorFilepath, rasterFilepath, classNumber):
         """Rasterizing a vector layer into a raster layer.
