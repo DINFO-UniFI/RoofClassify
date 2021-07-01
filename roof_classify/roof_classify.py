@@ -492,6 +492,26 @@ class RoofClassify:
         pixelsValue = trainingImgArray[roofPixelIdx]
         return pixelsValue, pixelsLabel
 
+    def classifyRoofTypes(trainedClassifier, rasterFilepath):
+        """Classify roofs in a raster image using a trained classifier.
+
+        :param trainedClassifier: A trained ramdom forest classifier
+        :type trainedClassifier: sklearn.ensemble.RandomForestClassifier
+        :param rasterFilepath: Raster image filepath
+        :type rasterFilepath: str
+        :return: Classified raster image
+        :rtype: np.ndarray
+        """
+        imgArray = RoofClassify.convertRaster2Array(rasterFilepath)
+        nrows, ncols, nbands = imgArray.shape
+        ncells = nrows * ncols
+        # Flattening the raster image to fit with the classifier predict function
+        flatImg = imgArray.reshape((ncells, nbands))
+        result = trainedClassifier.predict(flatImg)
+        # Reshape the result: split the labeled pixels into rows to create an image
+        classifiedImg = result.reshape((nrows, ncols))
+        return classifiedImg
+
     def writeGeotiff(inputImgFile, classifiedImg, roofTypesNumber, outputImgfilepath):
         """Write an numpy array image into a geotiff image.
 
