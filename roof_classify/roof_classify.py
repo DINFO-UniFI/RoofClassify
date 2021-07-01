@@ -552,28 +552,21 @@ class RoofClassify:
             self.log(self.dlg.lineEdit_2.text())
             directory_raster = self.dlg.lineEdit.text()
             directory_shape = self.dlg.lineEdit_2.text()
-            raster_training = self.dlg.lineEdit_3.text()
+            trainingRasterFilepath = self.dlg.lineEdit_3.text()
             os.chdir(directory_raster)
-            self.log(raster_training)
+            self.log(trainingRasterFilepath)
             out_folder = self.dlg.lineEdit_4.text()
 
             # Training data processing
-            raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
-            bands_data = []
-            for b in range(1, raster_dataset.RasterCount + 1):
-                band = raster_dataset.GetRasterBand(b)
-                bands_data.append(band.ReadAsArray())
-
-            bands_data = np.dstack(bands_data)
-            rows, cols, n_bands = bands_data.shape
+            trainingImgArray = RoofClassify.convertRaster2Array(trainingRasterFilepath)
 
             # Labelling the training image
-            labeled_pixels = RoofClassify.labellingRoofingRaster(
-                directory_shape, raster_training
+            labelledImg = RoofClassify.labellingRoofingRaster(
+                directory_shape, trainingRasterFilepath
             )
-            is_train = np.nonzero(labeled_pixels)
-            training_labels = labeled_pixels[is_train]
-            training_samples = bands_data[is_train]
+            is_train = np.nonzero(labelledImg)
+            training_labels = labelledImg[is_train]
+            training_samples = trainingImgArray[is_train]
             # Creating and training the classifier with labelled data
             classifier = CLASSIFIERS["random-forest"]
 
@@ -585,17 +578,12 @@ class RoofClassify:
 
                 x = directory_raster + "/" + file
                 self.log(x)
-                raster_dataset2 = gdal.Open(x, gdal.GA_ReadOnly)
-                bands_data2 = []
-                for b in range(1, raster_dataset2.RasterCount + 1):
-                    band2 = raster_dataset2.GetRasterBand(b)
-                    bands_data2.append(band2.ReadAsArray())
-                bands_data2 = np.dstack(bands_data2)
-                rows2, cols2, n_bands2 = bands_data2.shape
+                imgArray = RoofClassify.convertRaster2Array(x)
+                rows2, cols2, n_bands2 = imgArray.shape
 
                 n_samples2 = rows2 * cols2
 
-                flat_pixels = bands_data2.reshape((n_samples2, n_bands2))
+                flat_pixels = imgArray.reshape((n_samples2, n_bands2))
 
                 result = classifier.predict(flat_pixels)
 
