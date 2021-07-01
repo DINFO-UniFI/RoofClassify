@@ -392,6 +392,26 @@ class RoofClassify:
         files = [shp for shp in shpFolder]
         return len(files)
 
+    def convertRaster2Array(rasterFilepath):
+        """Convert a multiband raster into a numpy array.
+        Given a 3-band raster image of size ncols*nrows pixels, the function will return
+        an numpy array of shape (3, ncols, nrows).
+
+        :param rasterFilepath: Filepath of the raster to convert
+        :type rasterFilepath: str
+        :return: Converted image into array
+        :rtype: numpy.array
+        """
+        raster_dataset = gdal.Open(rasterFilepath, gdal.GA_ReadOnly)
+        bands_data = []
+        # Parsing the raster's bands
+        for b in range(1, raster_dataset.RasterCount + 1):
+            band = raster_dataset.GetRasterBand(b)
+            bands_data.append(band.ReadAsArray())
+        # Create an array of shape (ndim, nrows, ncols)
+        bands_data = np.dstack(bands_data)
+        return bands_data
+
     def rasterizeRoofingLayer(vectorFilepath, rasterFilepath, classNumber):
         """Rasterizing a vector layer into a raster layer.
         The image pixels which account for the vector elements are labelled with the input class number value.
