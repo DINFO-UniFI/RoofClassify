@@ -408,7 +408,7 @@ class RoofClassify:
         for b in range(1, raster_dataset.RasterCount + 1):
             band = raster_dataset.GetRasterBand(b)
             bands_data.append(band.ReadAsArray())
-        # Create an array of shape (ndim, nrows, ncols)
+        # Create an array of shape (nrows, ncols, ndim)
         bands_data = np.dstack(bands_data)
         return bands_data
 
