@@ -595,7 +595,7 @@ class RoofClassify:
             shapefilesDirectory = self.dlg.lineEdit_2.text()
             trainingRasterFilepath = self.dlg.lineEdit_3.text()
             self.log(trainingRasterFilepath)
-            out_folder = self.dlg.lineEdit_4.text()
+            outputDirectory = self.dlg.lineEdit_4.text()
 
             # Instanciate a random forest classifier
             classifier = CLASSIFIERS["random-forest"]
@@ -609,26 +609,21 @@ class RoofClassify:
             # Parsing the images to be classified
             for file in Path(rasterDirectory).rglob("*.tif"):
                 imgFilepath = str(file)
-                self.log(str(file))
+                self.log(imgFilepath)
+                classifiedImage = RoofClassify.classifyRoofTypes(
+                    classifier, imgFilepath
+                )
 
-                imgArray = RoofClassify.convertRaster2Array(imgFilepath)
-                rows2, cols2, n_bands2 = imgArray.shape
-
-                n_samples2 = rows2 * cols2
-
-                flat_pixels = imgArray.reshape((n_samples2, n_bands2))
-
-                result = classifier.predict(flat_pixels)
-
-                # Reshape the result: split the labeled pixels into rows to create an image
-                classification = result.reshape((rows2, cols2))
-                file = file.replace(".tif", "")
-                name = out_folder + "\\" + file + "_classificato.tif"
-                self.log(name)
+                outputFilename = (file.name).replace(".tif", "_classsified.tif")
+                outputFilepath = outputDirectory / outputFilename
+                self.log(outputFilepath)
                 # Write the image array into a QgsRasterLayer
                 rasterOutput = RoofClassify.writeGeotiff(
-                    imgFilepath, classification, self.getNumberofClasses(), name
+                    imgFilepath,
+                    classifiedImage,
+                    self.getNumberofClasses(),
+                    outputFilepath,
                 )
                 classifiedImages.append(rasterOutput)
 
-            RoofClassify.mergeRasterLayers(classifiedImages, out_folder)
+            RoofClassify.mergeRasterLayers(classifiedImages, outputDirectory)
