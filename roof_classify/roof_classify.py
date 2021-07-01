@@ -188,12 +188,17 @@ COLORS = [
     "#012C58",
 ]
 
+
+"""
+For more information on the implementation of random forests and SVM classifiers,
+see documentation below:
+* http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+* http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+"""
 CLASSIFIERS = {
-    # http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
     "random-forest": RandomForestClassifier(
         n_jobs=4, n_estimators=10, class_weight="balanced"
     ),
-    # http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
     "svm": SVC(class_weight="balanced"),
 }
 
