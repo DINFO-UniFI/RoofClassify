@@ -589,13 +589,13 @@ class RoofClassify:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            self.log(self.dlg.lineEdit.text())
-            self.log(self.dlg.lineEdit_2.text())
             rasterDirectory = self.dlg.lineEdit.text()
             shapefilesDirectory = self.dlg.lineEdit_2.text()
             trainingRasterFilepath = self.dlg.lineEdit_3.text()
-            self.log(trainingRasterFilepath)
             outputDirectory = self.dlg.lineEdit_4.text()
+            self.log(rasterDirectory)
+            self.log(shapefilesDirectory)
+            self.log(trainingRasterFilepath)
 
             # Instanciate a random forest classifier
             classifier = CLASSIFIERS["random-forest"]
