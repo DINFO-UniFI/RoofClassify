@@ -452,7 +452,7 @@ class RoofClassify:
         :return: Converted raster into geotiff image
         :rtype: QgsRasterLayer
         """
-        inputRaster = gdal.Open(inputImgFile, gdal.GA_ReadOnly)
+        inputRaster = gdal.Open(inputImgFile)
         driver = gdal.GetDriverByName("GTiff")
         rows, cols = classifiedImg.shape
         dataset = driver.Create(outputImgfilepath, cols, rows, 1, gdal.GDT_Byte)
