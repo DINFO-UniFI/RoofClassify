@@ -32,7 +32,7 @@ jobs:
       - name: Print QGIS version
         run: qgis --version
 
-      - uses: actions/cache@v2.1.6
+      - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements/*.txt') }}
@@ -42,7 +42,7 @@ jobs:
       - name: Install Python requirements
         run: |
           python3 -m pip install -U pip setuptools wheel
-          python -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
+          python3 -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
           python3 -m pip install -U -r requirements/testing.txt
 
       - name: Run Unit tests

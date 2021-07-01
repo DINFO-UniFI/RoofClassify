@@ -24,13 +24,15 @@
 import glob
 import os
 import os.path
-import subprocess
+from pathlib import Path
 
 # 3rd party
 import numpy as np
 
 # Initialize Qt resources from file resources.py
 from osgeo import gdal
+from qgis import processing
+from qgis.core import QgsRasterLayer, QgsVectorLayer
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
@@ -185,16 +187,6 @@ COLORS = [
     "#7ED379",
     "#012C58",
 ]
-
-
-def calcolaMedia(mat, i, dim):
-    num_val = 0
-    somma = 0
-    for j in range(dim - 1):
-        if mat[j, i] != 0:
-            num_val = num_val + 1
-            somma = somma + mat[j, i]
-    return somma / num_val, num_val
 
 
 class RoofClassify:
@@ -375,6 +367,144 @@ class RoofClassify:
         )
         self.dlg.lineEdit_4.setText(out_folder)
 
+    def getNumberofClasses(self):
+        """
+
+        :return: Get the number of classes (i.e. number of roof types)
+        :rtype: int
+        """
+        roofingShapefileDir = self.dlg.lineEdit_2.text()
+        shpFolder = Path(roofingShapefileDir).rglob("*.shp")
+        return len(shpFolder)
+
+    def rasterizeRoofingLayer(vectorFilepath, rasterFilepath, classNumber):
+        """Rasterizing a vector layer into a raster layer.
+        The image pixels which account for the vector elements are labelled with the input class number value.
+        The output image dimension is the same as the image raster to be classified.
+        This function will be run to rasterize roofing layers.
+        We assume that both raster and vector layers have the same SCR.
+
+        :param vectorFilepath: Path to vector layer
+        :type vectorFilepath: str
+        :param classNumber: The value that will account for each rasterized element.
+                            For instance, if classNumber = 5, then the rasterized elements
+                            cells of the output output will value 5.
+        :type classNumber: int
+        :return: Rasterized roofing filepath.
+        :rtype: str
+        """
+
+        vlayer = QgsVectorLayer(vectorFilepath, "roofing", "ogr")
+        rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
+        params = {
+            "INPUT": vlayer,
+            "BURN": classNumber,
+            "UNITS": 1,  # Georeferecend pixels,
+            "DATA_TYPE": 2,  # UInt16 data type
+            "WIDTH": rlayer.rasterUnitsPerPixelX(),  # Using input raster resolution
+            "HEIGHT": rlayer.rasterUnitsPerPixelY(),
+            "EXTENT": rlayer.id(),
+            "OUTPUT": "TEMPORARY_OUTPUT",
+        }
+        rasterizedRoofing = processing.run("gdal:rasterize", params)
+        return rasterizedRoofing["OUTPUT"]
+
+    def labellingRoofingRaster(roofingShapefileDir, rasterFilepath):
+        """Generating a raster in which all the roofs are labelled by type.
+
+        :param roofingShapefileDir: Roofing layers directory (it contains one shapefile per type of roof)
+        :type roofingShapefileDir: str
+        :param rasterFilepath: Filepath of the raster image to be classified
+        :type rasterFilepath: str
+        :return: A raster image in which the roofs are labelled according to their type.
+        :rtype: np.array
+        """
+        rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
+        # The output image has the same dimension as the input raster layer
+        labelledImg = np.zeros((rlayer.width(), rlayer.height()))
+
+        shpFolder = Path(roofingShapefileDir).rglob("*.shp")
+        files = [x for x in shpFolder]
+        for classLabel, roofVectorFilepath in enumerate(files, start=1):
+            tempRasterFile = RoofClassify.rasterizeRoofingLayer(
+                roofVectorFilepath, rasterFilepath, classLabel
+            )
+            # Read the roof rasterized file, and convert the first raster band into a numpy array
+            roofLabelledRaster = (
+                gdal.Open(tempRasterFile).GetRasterBand(1).ReadAsArray()
+            )
+            labelledImg += roofLabelledRaster
+        return labelledImg
+
+    def writeGeotiff(inputImgFile, classifiedImg, roofTypesNumber, outputImgfilepath):
+        """Write an numpy array image into a geotiff image.
+
+        :param inputImgFile: Filepath of the input raster image before classification.
+                            Its spatial properties will be copied into the output geotiff image.
+        :type inputImgFile: str
+        :param classifiedImg: Classified image
+        :type classifiedImg: numpy.array
+        :param roofTypesNumber: Number of classes i.e. number of roof types used in the classification
+        :type roofTypesNumber: int
+        :param outputImgfilepath: Filepath of the output geotiff image
+        :type outputImgfilepath: str
+        :return: Converted raster into geotiff image
+        :rtype: QgsRasterLayer
+        """
+        inputRaster = gdal.Open(inputImgFile, gdal.GA_ReadOnly)
+        driver = gdal.GetDriverByName("GTiff")
+        rows, cols = classifiedImg.shape
+        dataset = driver.Create(outputImgfilepath, cols, rows, 1, gdal.GDT_Byte)
+        dataset.SetGeoTransform(inputRaster.GetGeoTransform())
+        dataset.SetProjection(inputRaster.GetProjectionRef())
+        band = dataset.GetRasterBand(1)
+        band.WriteArray(classifiedImg)
+
+        # Create a pseudo-color table for the first band
+        pct = gdal.ColorTable()
+        for classLabel in range(roofTypesNumber + 1):
+            color_hex = COLORS[classLabel]
+            r = int(color_hex[1:3], 16)
+            g = int(color_hex[3:5], 16)
+            b = int(color_hex[5:7], 16)
+            pct.SetColorEntry(classLabel, (r, g, b, 255))
+        band.SetColorTable(pct)
+
+        # Add metadata to the first image
+        metadata = {
+            "TIFFTAG_COPYRIGHT": "CC BY 4.0",
+            "TIFFTAG_DOCUMENTNAME": "classification",
+            "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
+            "TIFFTAG_MAXSAMPLEVALUE": str(roofTypesNumber),
+            "TIFFTAG_MINSAMPLEVALUE": "0",
+            "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
+        }
+        dataset.SetMetaData(metadata)
+        rlayer = QgsRasterLayer(outputImgfilepath, "classifiedImg")
+        return rlayer
+
+    def mergeRasterLayers(rasterLayerList, outputDirectory):
+        """Merging classified images into one image. The merged image is saved under the name
+        'merged_classification.tif'.
+
+        :param rasterLayerList: List of classified images
+        :type rasterLayerList: list<QgsRasterLayer>
+        :param outputDirectory: output directory
+        :type outputDirectory: str
+        """
+        mergeParams = {
+            "DATA_TYPE": 2,  # UInt16 encoded output
+            "EXTRA": "",
+            "INPUT": rasterLayerList,
+            "NODATA_INPUT": None,
+            "NODATA_OUTPUT": None,
+            "OPTIONS": "",
+            "OUTPUT": f"{outputDirectory}merged_classification.tif",
+            "PCT": True,  # Grab a pseudo-color table from the first input image
+            "SEPARATE": False,
+        }
+        processing.run("gdal:merge", mergeParams)
+
     def run(self):
         """Run method that performs all the real work"""
         # show the dialog
@@ -383,117 +513,6 @@ class RoofClassify:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-
-            # da qui inizia l'esecuzione del plugin una volta che si preme OK
-
-            # serve per rasterizzare un vettore. Ritorna un gdal.Dataset.
-            def create_mask_from_vector(
-                vector_data_path,
-                cols,
-                rows,
-                geo_transform,
-                projection,
-                target_value=1,
-                output_fname="",
-                dataset_format="MEM",
-            ):
-                """
-                :param vector_data_path: Path ad un shapefile
-                :param cols: Numero di colonne del risultato
-                :param rows: Numero di righe del risultato
-                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-                                      transforming between pixel/line (P,L) raster space, and projection
-                                      coordinates (Xp,Yp) space.
-                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-                :param target_value: Pixel value for the pixels. Must be a valid gdal.GDT_UInt16 value.
-                :param output_fname: If the dataset_format is GeoTIFF, this is the output file name
-                :param dataset_format: The gdal.Dataset driver name. [default: MEM]
-                """
-                data_source = gdal.OpenEx(vector_data_path, gdal.OF_VECTOR)
-                if data_source is None:
-                    self.log(
-                        message=f"File read failed: {vector_data_path}",
-                        log_level=2,
-                        push=True,
-                    )
-                layer = data_source.GetLayer(0)
-                driver = gdal.GetDriverByName(dataset_format)
-                target_ds = driver.Create(output_fname, cols, rows, 1, gdal.GDT_UInt16)
-                target_ds.SetGeoTransform(geo_transform)
-                target_ds.SetProjection(projection)
-                gdal.RasterizeLayer(target_ds, [1], layer, burn_values=[target_value])
-                return target_ds
-
-            def vectors_to_raster(file_paths, rows, cols, geo_transform, projection):
-                """
-                Rasterize, in a single image, all the vectors in the given directory.
-                The data of each file will be assigned the same pixel value. This value is defined by the order
-                of the file in file_paths, starting with 1: so the points/poligons/etc in the same file will be
-                marked as 1, those in the second file will be 2, and so on.
-                :param file_paths: Path to a directory with shapefiles
-                :param rows: Number of rows of the result
-                :param cols: Number of columns of the result
-                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-                                      transforming between pixel/line (P,L) raster space, and projection
-                                      coordinates (Xp,Yp) space.
-                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-                """
-                labeled_pixels = np.zeros((rows, cols))
-                for i, path in enumerate(file_paths):
-                    label = i + 1
-
-                    ds = create_mask_from_vector(
-                        path, cols, rows, geo_transform, projection, target_value=label
-                    )
-                    band = ds.GetRasterBand(1)
-                    a = band.ReadAsArray()
-
-                    labeled_pixels += a
-                    ds = None
-                return labeled_pixels
-
-            def write_geotiff(
-                fname, data, geo_transform, projection, data_type=gdal.GDT_Byte
-            ):
-                """
-                Create a GeoTIFF file with the given data.
-                :param fname: Path to a directory with shapefiles
-                :param data: Number of rows of the result
-                :param geo_transform: Returned value of gdal.Dataset.GetGeoTransform (coefficients for
-                                      transforming between pixel/line (P,L) raster space, and projection
-                                      coordinates (Xp,Yp) space.
-                :param projection: Projection definition string (Returned by gdal.Dataset.GetProjectionRef)
-                """
-                driver = gdal.GetDriverByName("GTiff")
-                rows, cols = data.shape
-                dataset = driver.Create(fname, cols, rows, 1, data_type)
-                dataset.SetGeoTransform(geo_transform)
-                dataset.SetProjection(projection)
-                band = dataset.GetRasterBand(1)
-                band.WriteArray(data)
-
-                ct = gdal.ColorTable()
-                for pixel_value in range(len(classes) + 1):
-                    color_hex = COLORS[pixel_value]
-                    r = int(color_hex[1:3], 16)
-                    g = int(color_hex[3:5], 16)
-                    b = int(color_hex[5:7], 16)
-                    ct.SetColorEntry(pixel_value, (r, g, b, 255))
-                band.SetColorTable(ct)
-
-                metadata = {
-                    "TIFFTAG_COPYRIGHT": "CC BY 4.0",
-                    "TIFFTAG_DOCUMENTNAME": "classification",
-                    "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
-                    "TIFFTAG_MAXSAMPLEVALUE": str(len(classes)),
-                    "TIFFTAG_MINSAMPLEVALUE": "0",
-                    "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
-                }
-                dataset.SetMetadata(metadata)
-
-                dataset = None  # Close the file
-                return
-
             self.log(self.dlg.lineEdit.text())
             self.log(self.dlg.lineEdit_2.text())
             # rasterIn=self.dlg.lineEdit.text()
@@ -507,20 +526,13 @@ class RoofClassify:
             # log.write("caricamento training set..\n")
             out_folder = self.dlg.lineEdit_4.text()
 
-            nomi = ""
-
-            nnn = 1
+            classifiedImages = []
             for file in glob.glob("*.tif"):
                 self.log(file)
-                # raster_dataset2 = gdal.Open("C:/Users/Alessandro/Desktop/11-10/ViaToscanaTestRitagliato.tif", gdal.GA_ReadOnly)
 
                 x = directory_raster + "/" + file
                 self.log(x)
                 raster_dataset2 = gdal.Open(x, gdal.GA_ReadOnly)
-
-                geo_transform2 = raster_dataset2.GetGeoTransform()
-
-                proj2 = raster_dataset2.GetProjectionRef()
                 bands_data2 = []
                 for b in range(1, raster_dataset2.RasterCount + 1):
                     band2 = raster_dataset2.GetRasterBand(b)
@@ -531,8 +543,7 @@ class RoofClassify:
                 n_samples2 = rows2 * cols2
 
                 raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
-                geo_transform = raster_dataset.GetGeoTransform()
-                proj = raster_dataset.GetProjectionRef()
+
                 bands_data = []
                 for b in range(1, raster_dataset.RasterCount + 1):
                     band = raster_dataset.GetRasterBand(b)
@@ -541,21 +552,11 @@ class RoofClassify:
                 bands_data = np.dstack(bands_data)
                 rows, cols, n_bands = bands_data.shape
 
-                # A sample is a vector with all the bands data. Each pixel (independent of its position) is a
-                # sample.
-                n_samples = rows * cols
-                files = [f for f in os.listdir(directory_shape) if f.endswith(".shp")]
-
-                classes = [f.split(".")[0] for f in files]
-                self.log(str(classes))
-                shapefiles = [
-                    os.path.join(directory_shape, f)
-                    for f in files
-                    if f.endswith(".shp")
-                ]
-                labeled_pixels = vectors_to_raster(
-                    shapefiles, rows, cols, geo_transform, proj
+                # Labelling the training image
+                labeled_pixels = RoofClassify.labellingRoofingRaster(
+                    directory_shape, raster_training
                 )
+
                 is_train = np.nonzero(labeled_pixels)
                 training_labels = labeled_pixels[is_train]
                 training_samples = bands_data[is_train]
@@ -581,19 +582,10 @@ class RoofClassify:
                 file = file.replace(".tif", "")
                 name = out_folder + "\\" + file + "_classificato.tif"
                 self.log(name)
-                write_geotiff(name, classification, geo_transform2, proj2)
-                nnn = nnn + 1
-                nomi = nomi + " " + name
-
-            if nnn > 2:
-                dove = "D:/risultato/ClassificataUnita.tif"
-                subprocess.call(
-                    "gdal_merge.bat -ot UInt16 -pct -o " + dove + " -of GTiff " + nomi
+                # Write the image array into a QgsRasterLayer
+                rasterOutput = RoofClassify.writeGeotiff(
+                    x, classification, self.getNumberofClasses(), name
                 )
+                classifiedImages.append(rasterOutput)
 
-            if self.dlg.checkBox.isChecked():
-                self.log("ciao")
-                # inserire codice che crea shape conteggio
-            if self.dlg.checkBox_2.isChecked():
-                self.log("ciao2")
-                # inserire codice che crea shape percentuale
+            RoofClassify.mergeRasterLayers(classifiedImages, out_folder)
