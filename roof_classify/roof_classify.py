@@ -574,28 +574,22 @@ class RoofClassify:
             self.log(self.dlg.lineEdit.text())
             self.log(self.dlg.lineEdit_2.text())
             directory_raster = self.dlg.lineEdit.text()
-            directory_shape = self.dlg.lineEdit_2.text()
+            shapefilesDirectory = self.dlg.lineEdit_2.text()
             trainingRasterFilepath = self.dlg.lineEdit_3.text()
             os.chdir(directory_raster)
             self.log(trainingRasterFilepath)
             out_folder = self.dlg.lineEdit_4.text()
 
-            # Training data processing
-            trainingImgArray = RoofClassify.convertRaster2Array(trainingRasterFilepath)
-
-            # Labelling the training image
-            labelledImg = RoofClassify.labellingRoofingRaster(
-                directory_shape, trainingRasterFilepath
-            )
-            is_train = np.nonzero(labelledImg)
-            training_labels = labelledImg[is_train]
-            training_samples = trainingImgArray[is_train]
-            # Creating and training the classifier with labelled data
+            # Instanciate a random forest classifier
             classifier = CLASSIFIERS["random-forest"]
-
-            classifier.fit(training_samples, training_labels)
+            # Process training data
+            training_samples, training_labels = RoofClassify.generateTrainingData(
+                trainingRasterFilepath, shapefilesDirectory
+            )
+            classifier.fit(training_samples, training_labels)  # Training the classifier
 
             classifiedImages = []
+            # Parsing the images to be classified
             for file in glob.glob("*.tif"):
                 self.log(file)
 
