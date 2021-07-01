@@ -471,6 +471,29 @@ class RoofClassify:
             labelledImg += roofLabelledRaster
         return labelledImg
 
+    def generateTrainingData(trainingRasterFilepath, shapefilesDirectory):
+        """Generate training data for roof classification.
+
+        :param trainingRasterFilepath: Training raster filepath
+        :type trainingRasterFilepath: str
+        :param shapefilesDirectory: Directory that contains the roof shapefiles
+                                    (one file per roof type)
+        :type shapefilesDirectory: str
+        :return: A set of roof pixels and their corresponding label (i.e their type of roof)
+        :rtype: (np.ndarray, np.ndarray)
+        """
+        # Training data processing
+        trainingImgArray = RoofClassify.convertRaster2Array(trainingRasterFilepath)
+
+        # Labelling the training image
+        labelledImg = RoofClassify.labellingRoofingRaster(
+            shapefilesDirectory, trainingRasterFilepath
+        )
+        roofPixelIdx = np.nonzero(labelledImg)  # Pixel indice of the roofs
+        pixelsLabel = labelledImg[roofPixelIdx]
+        pixelsValue = trainingImgArray[roofPixelIdx]
+        return pixelsValue, pixelsLabel
+
     def writeGeotiff(inputImgFile, classifiedImg, roofTypesNumber, outputImgfilepath):
         """Write an numpy array image into a geotiff image.
 
