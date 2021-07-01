@@ -573,10 +573,9 @@ class RoofClassify:
         if result:
             self.log(self.dlg.lineEdit.text())
             self.log(self.dlg.lineEdit_2.text())
-            directory_raster = self.dlg.lineEdit.text()
+            rasterDirectory = self.dlg.lineEdit.text()
             shapefilesDirectory = self.dlg.lineEdit_2.text()
             trainingRasterFilepath = self.dlg.lineEdit_3.text()
-            os.chdir(directory_raster)
             self.log(trainingRasterFilepath)
             out_folder = self.dlg.lineEdit_4.text()
 
@@ -590,12 +589,11 @@ class RoofClassify:
 
             classifiedImages = []
             # Parsing the images to be classified
-            for file in glob.glob("*.tif"):
-                self.log(file)
+            for file in Path(rasterDirectory).rglob("*.tif"):
+                imgFilepath = str(file)
+                self.log(str(file))
 
-                x = directory_raster + "/" + file
-                self.log(x)
-                imgArray = RoofClassify.convertRaster2Array(x)
+                imgArray = RoofClassify.convertRaster2Array(imgFilepath)
                 rows2, cols2, n_bands2 = imgArray.shape
 
                 n_samples2 = rows2 * cols2
@@ -611,7 +609,7 @@ class RoofClassify:
                 self.log(name)
                 # Write the image array into a QgsRasterLayer
                 rasterOutput = RoofClassify.writeGeotiff(
-                    x, classification, self.getNumberofClasses(), name
+                    imgFilepath, classification, self.getNumberofClasses(), name
                 )
                 classifiedImages.append(rasterOutput)
 
