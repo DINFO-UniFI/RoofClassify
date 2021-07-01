@@ -188,6 +188,15 @@ COLORS = [
     "#012C58",
 ]
 
+CLASSIFIERS = {
+    # http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+    "random-forest": RandomForestClassifier(
+        n_jobs=4, n_estimators=10, class_weight="balanced"
+    ),
+    # http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
+    "svm": SVC(class_weight="balanced"),
+}
+
 
 class RoofClassify:
     """QGIS Plugin Implementation."""
@@ -516,16 +525,34 @@ class RoofClassify:
         if result:
             self.log(self.dlg.lineEdit.text())
             self.log(self.dlg.lineEdit_2.text())
-            # rasterIn=self.dlg.lineEdit.text()
             directory_raster = self.dlg.lineEdit.text()
             directory_shape = self.dlg.lineEdit_2.text()
             raster_training = self.dlg.lineEdit_3.text()
-            # log = open("D:/AMIANTO/output/log.txt", "w")
             os.chdir(directory_raster)
             self.log(raster_training)
-            # log.write(time.strftime("%Y-%m-%d %H:%M"))
-            # log.write("caricamento training set..\n")
             out_folder = self.dlg.lineEdit_4.text()
+
+            # Training data processing
+            raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
+            bands_data = []
+            for b in range(1, raster_dataset.RasterCount + 1):
+                band = raster_dataset.GetRasterBand(b)
+                bands_data.append(band.ReadAsArray())
+
+            bands_data = np.dstack(bands_data)
+            rows, cols, n_bands = bands_data.shape
+
+            # Labelling the training image
+            labeled_pixels = RoofClassify.labellingRoofingRaster(
+                directory_shape, raster_training
+            )
+            is_train = np.nonzero(labeled_pixels)
+            training_labels = labeled_pixels[is_train]
+            training_samples = bands_data[is_train]
+            # Creating and training the classifier with labelled data
+            classifier = CLASSIFIERS["random-forest"]
+
+            classifier.fit(training_samples, training_labels)
 
             classifiedImages = []
             for file in glob.glob("*.tif"):
@@ -543,38 +570,7 @@ class RoofClassify:
 
                 n_samples2 = rows2 * cols2
 
-                raster_dataset = gdal.Open(raster_training, gdal.GA_ReadOnly)
-
-                bands_data = []
-                for b in range(1, raster_dataset.RasterCount + 1):
-                    band = raster_dataset.GetRasterBand(b)
-                    bands_data.append(band.ReadAsArray())
-
-                bands_data = np.dstack(bands_data)
-                rows, cols, n_bands = bands_data.shape
-
-                # Labelling the training image
-                labeled_pixels = RoofClassify.labellingRoofingRaster(
-                    directory_shape, raster_training
-                )
-
-                is_train = np.nonzero(labeled_pixels)
-                training_labels = labeled_pixels[is_train]
-                training_samples = bands_data[is_train]
-
                 flat_pixels = bands_data2.reshape((n_samples2, n_bands2))
-
-                CLASSIFIERS = {
-                    # http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
-                    "random-forest": RandomForestClassifier(
-                        n_jobs=4, n_estimators=10, class_weight="balanced"
-                    ),
-                    # http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-                    "svm": SVC(class_weight="balanced"),
-                }
-                classifier = CLASSIFIERS["random-forest"]
-
-                classifier.fit(training_samples, training_labels)
 
                 result = classifier.predict(flat_pixels)
 
