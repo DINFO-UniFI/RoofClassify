@@ -46,8 +46,6 @@ except Exception:
     from roof_classify.embedded_external_libs.sklearn.ensemble import (
         RandomForestClassifier,
     )
-    from roof_classify.embedded_external_libs.sklearn.svm import SVC
-
 # Import the code for the dialog
 from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
 from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
