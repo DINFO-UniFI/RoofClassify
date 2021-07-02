@@ -224,7 +224,8 @@ class DataClassifier:
     ) -> numpy.array:
         """Generating a raster in which all the roofs are labelled by type.
 
-        :param roofingShapefileDir: Roofing layers directory (it contains one shapefile per type of roof)
+        :param roofingShapefileDir: Roofing layers directory (it contains one shapefile
+                                    per type of roof)
         :type roofingShapefileDir: str
         :param rasterFilepath: Filepath of the raster image to be classified
         :type rasterFilepath: str
