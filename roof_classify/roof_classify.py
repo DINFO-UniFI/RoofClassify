@@ -37,7 +37,6 @@ from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 try:
     from sklearn.ensemble import RandomForestClassifier
-    from sklearn.svm import SVC
 except Exception:
     import site
 
@@ -185,20 +184,6 @@ COLORS = [
     "#7ED379",
     "#012C58",
 ]
-
-
-"""
-For more information on the implementation of random forests and SVM classifiers,
-see documentation below:
-* http://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestClassifier.html
-* http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-"""
-CLASSIFIERS = {
-    "random-forest": RandomForestClassifier(
-        n_jobs=4, n_estimators=10, class_weight="balanced"
-    ),
-    "svm": SVC(class_weight="balanced"),
-}
 
 
 class RoofClassify:
@@ -598,7 +583,9 @@ class RoofClassify:
             self.log(trainingRasterFilepath)
 
             # Instanciate a random forest classifier
-            classifier = CLASSIFIERS["random-forest"]
+            classifier = RandomForestClassifier(
+                n_jobs=4, n_estimators=10, class_weight="balanced"
+            )
             # Process training data
             training_samples, training_labels = RoofClassify.generateTrainingData(
                 trainingRasterFilepath, shapefilesDirectory
