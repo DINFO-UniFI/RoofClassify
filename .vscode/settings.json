@@ -21,6 +21,13 @@
         "--verbose"
     ],
     "python.linting.pylintEnabled": false,
+    // Test
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "-c",
+        "setup.cfg"
+    ],
+    "python.testing.unittestEnabled": false,
     // Git
     "git.enableCommitSigning": true,
     // Extensions
