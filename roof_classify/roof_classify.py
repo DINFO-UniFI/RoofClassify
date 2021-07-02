@@ -82,8 +82,6 @@ class RoofClassify:
         self.dlg.lineEdit_4.clear()
         self.dlg.pushButton_4.clicked.connect(self.select_output_folder)
 
-        self.classif_tools = DataClassifier()
-
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
 
@@ -235,6 +233,8 @@ class RoofClassify:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
+            classifier = DataClassifier()
+
             rasterDirectory = self.dlg.lineEdit.text()
             shapefilesDirectory = self.dlg.lineEdit_2.text()
             trainingRasterFilepath = self.dlg.lineEdit_3.text()
@@ -244,7 +244,6 @@ class RoofClassify:
             self.log(trainingRasterFilepath)
 
             # Instanciate a random forest classifier
-            classifier = DataClassifier()
             # Training the classifier
             classifier.train(trainingRasterFilepath, shapefilesDirectory)
 
@@ -260,7 +259,7 @@ class RoofClassify:
                 outputFilepath = outputDirectory / outputFilename
                 self.log(outputFilepath)
                 # Write the image array into a QgsRasterLayer
-                rasterOutput = DataClassifier.writeGeotiff(
+                rasterOutput = classifier.writeGeotiff(
                     imgFilepath,
                     classifiedImage,
                     self.get_classes_count(),
@@ -268,4 +267,4 @@ class RoofClassify:
                 )
                 classifiedImages.append(rasterOutput)
 
-            DataClassifier.mergeRasterLayers(classifiedImages, outputDirectory)
+            classifier.mergeRasterLayers(classifiedImages, outputDirectory)
