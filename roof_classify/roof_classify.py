@@ -50,6 +50,7 @@ except Exception:
 from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
 from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
 from roof_classify.toolbelt import PlgLogger
+from roof_classify.logic import DataClassifier
 
 # creo un set di colori pseudocasuali da usare poi nella classificazione
 COLORS = [
@@ -230,6 +231,8 @@ class RoofClassify:
         self.dlg.lineEdit_4.clear()
         self.dlg.pushButton_4.clicked.connect(self.select_output_folder)
 
+        self.classif_tools = DataClassifier()
+
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
 
@@ -362,7 +365,7 @@ class RoofClassify:
         )
         self.dlg.lineEdit_4.setText(out_folder)
 
-    def getNumberofClasses(self):
+    def getNumberofClasses(self) -> int:
         """
 
         :return: Get the number of classes (i.e. number of roof types)
@@ -464,7 +467,7 @@ class RoofClassify:
         :rtype: (np.ndarray, np.ndarray)
         """
         # Training data processing
-        trainingImgArray = RoofClassify.convertRaster2Array(trainingRasterFilepath)
+        # trainingImgArray = self.classif_tools.convertRaster2Array(trainingRasterFilepath)
 
         # Labelling the training image
         labelledImg = RoofClassify.labellingRoofingRaster(
@@ -485,7 +488,7 @@ class RoofClassify:
         :return: Classified raster image
         :rtype: np.ndarray
         """
-        imgArray = RoofClassify.convertRaster2Array(rasterFilepath)
+        imgArray = self.classif_tools.convertRaster2Array(rasterFilepath)
         nrows, ncols, nbands = imgArray.shape
         ncells = nrows * ncols
         # Flattening the raster image to fit with the classifier predict function
