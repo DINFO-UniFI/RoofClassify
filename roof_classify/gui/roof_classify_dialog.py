@@ -20,23 +20,28 @@
  ***************************************************************************/
 """
 
-import os
+# standard
+from pathlib import Path
 
+# PyQGIS
 from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog
 
+# plugin
+from roof_classify.__about__ import __title__, __version__
+
+# -- Globals
 FORM_CLASS, _ = uic.loadUiType(
-    os.path.join(os.path.dirname(__file__), "roof_classify_dialog_base.ui")
+    Path(__file__).parent / "{}_base.ui".format(Path(__file__).stem)
 )
+
+
+# -- Classes
 
 
 class RoofClassifyDialog(QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         """Constructor."""
         super(RoofClassifyDialog, self).__init__(parent)
-        # Set up the user interface from Designer.
-        # After setupUI you can access any designer object by doing
-        # self.<objectname>, and you can use autoconnect slots - see
-        # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
-        # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+        self.setWindowTitle(f"{__title__} - v{__version__}")
