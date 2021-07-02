@@ -1,6 +1,8 @@
 #! python3  # noqa: E265
 
 # 3rd party
+from typing import List
+
 import numpy
 from osgeo import gdal
 
@@ -340,7 +342,7 @@ class DataClassifier:
         return rlayer
 
     @staticmethod
-    def mergeRasterLayers(rasterLayerList: list(QgsRasterLayer), outputDirectory: str):
+    def mergeRasterLayers(rasterLayerList: List[QgsRasterLayer], outputDirectory: str):
         """Merging classified images into one image. The merged image is saved under the name
         'merged_classification.tif'.
 
