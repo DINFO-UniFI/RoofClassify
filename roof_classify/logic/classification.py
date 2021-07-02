@@ -57,7 +57,7 @@ class DataClassifier:
     """Data processing and classifiers."""
 
     def __init__(self) -> None:
-        self.classifier = RandomForestClassifier(
+        self.classifier_rf = RandomForestClassifier(
             n_jobs=4, n_estimators=10, class_weight="balanced"
         )
 
@@ -75,14 +75,14 @@ class DataClassifier:
         ncells = nrows * ncols
         # Flattening the raster image to fit with the classifier predict function
         flatImg = imgArray.reshape((ncells, nbands))
-        result = self.classifier.predict(flatImg)
+        result = self.classifier_rf.predict(flatImg)
         # Reshape the result: split the labeled pixels into rows to create an image
         classifiedImg = result.reshape((nrows, ncols))
         return classifiedImg
 
     def train(self, trainingRasterFilepath: str, shapefilesDirectory: str):
         # Training data processing
-        trainingImgArray = DataClassifier.convertRaster2Array(trainingRasterFilepath)
+        trainingImgArray = self.convertRaster2Array(trainingRasterFilepath)
 
         # Labelling the training image
         labelledImg = self.labellingRoofingRaster(
@@ -91,10 +91,9 @@ class DataClassifier:
         roofPixelIdx = numpy.nonzero(labelledImg)  # Pixel indice of the roofs
         pixelsLabel = labelledImg[roofPixelIdx]
         pixelsValue = trainingImgArray[roofPixelIdx]
-        self.classifier.fit(pixelsValue, pixelsLabel)
+        self.classifier_rf.fit(pixelsValue, pixelsLabel)
 
-    @staticmethod
-    def convertRaster2Array(rasterFilepath: str) -> numpy.array:
+    def convertRaster2Array(self, rasterFilepath: str) -> numpy.array:
         """Convert a multiband raster into a numpy array.
         Given a 3-band raster image of size ncols*nrows pixels, the function will return
         an numpy array of shape (ncols, nrows, 3).
@@ -114,9 +113,8 @@ class DataClassifier:
         bands_data = numpy.dstack(bands_data)
         return bands_data
 
-    @staticmethod
     def labellingRoofingRaster(
-        roofingShapefileDir: str, rasterFilepath: str
+        self, roofingShapefileDir: str, rasterFilepath: str
     ) -> numpy.array:
         """Generating a raster in which all the roofs are labelled by type.
 
@@ -135,7 +133,7 @@ class DataClassifier:
         shpFolder = Path(roofingShapefileDir).rglob("*.shp")
         files = [x for x in shpFolder]
         for classLabel, roofVectorFilepath in enumerate(files, start=1):
-            tempRasterFile = DataClassifier.rasterizeRoofingLayer(
+            tempRasterFile = self.rasterizeRoofingLayer(
                 roofVectorFilepath, rasterFilepath, classLabel
             )
             # Read the roof rasterized file, and convert the first raster band into a numpy array
@@ -179,7 +177,7 @@ class DataClassifier:
             "OUTPUT": "TEMPORARY_OUTPUT",
         }
         rasterizedRoofing = processing.run("gdal:rasterize", params)
-        return rasterizedRoofing["OUTPUT"]
+        return rasterizedRoofing.get("OUTPUT")
 
     @staticmethod
     def writeGeotiff(
