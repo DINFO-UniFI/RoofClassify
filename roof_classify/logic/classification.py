@@ -24,6 +24,7 @@ from qgis.core import QgsRasterLayer, QgsVectorLayer
 # ############################################################################
 # ########## Classes ###############
 # ##################################
+# Set of colors to create a pseudo-color table used in the classification
 COLORS = [
     "#000000",
     "#FFFF00",
