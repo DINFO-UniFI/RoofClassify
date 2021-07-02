@@ -584,29 +584,23 @@ class RoofClassify:
             self.log(trainingRasterFilepath)
 
             # Instanciate a random forest classifier
-            classifier = RandomForestClassifier(
-                n_jobs=4, n_estimators=10, class_weight="balanced"
-            )
-            # Process training data
-            training_samples, training_labels = RoofClassify.generateTrainingData(
-                trainingRasterFilepath, shapefilesDirectory
-            )
-            classifier.fit(training_samples, training_labels)  # Training the classifier
+            classifier = DataClassifier()
+            # Training the classifier
+            classifier.train(trainingRasterFilepath, shapefilesDirectory)
 
             classifiedImages = []
             # Parsing the images to be classified
             for file in Path(rasterDirectory).rglob("*.tif"):
                 imgFilepath = str(file)
                 self.log(imgFilepath)
-                classifiedImage = RoofClassify.classifyRoofTypes(
-                    classifier, imgFilepath
-                )
-
+                # Classify the image
+                classifiedImage = classifier.classifyRoofTypes(imgFilepath)
+                # Define an export filepath for the classified image
                 outputFilename = (file.name).replace(".tif", "_classsified.tif")
                 outputFilepath = outputDirectory / outputFilename
                 self.log(outputFilepath)
                 # Write the image array into a QgsRasterLayer
-                rasterOutput = RoofClassify.writeGeotiff(
+                rasterOutput = DataClassifier.writeGeotiff(
                     imgFilepath,
                     classifiedImage,
                     self.getNumberofClasses(),
@@ -614,4 +608,4 @@ class RoofClassify:
                 )
                 classifiedImages.append(rasterOutput)
 
-            RoofClassify.mergeRasterLayers(classifiedImages, outputDirectory)
+            DataClassifier.mergeRasterLayers(classifiedImages, outputDirectory)
