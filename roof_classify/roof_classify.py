@@ -49,8 +49,8 @@ except Exception:
 # Import the code for the dialog
 from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
 from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
-from roof_classify.toolbelt import PlgLogger
 from roof_classify.logic import DataClassifier
+from roof_classify.toolbelt import PlgLogger
 
 # creo un set di colori pseudocasuali da usare poi nella classificazione
 COLORS = [
