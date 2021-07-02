@@ -216,16 +216,16 @@ class RoofClassify:
         )
         self.dlg.lineEdit_4.setText(out_folder)
 
-    def getNumberofClasses(self) -> int:
-        """
+    def get_classes_count(self) -> int:
+        """Count number of roof types (= classes).
 
-        :return: Get the number of classes (i.e. number of roof types)
+        :return: number of classes (i.e. number of roof types)
         :rtype: int
         """
         roofingShapefileDir = self.dlg.lineEdit_2.text()
-        shpFolder = Path(roofingShapefileDir).rglob("*.shp")
-        files = [shp for shp in shpFolder]
-        return len(files)
+        li_shps = Path(roofingShapefileDir).rglob("*.shp")
+
+        return len(list(li_shps))
 
     def run(self):
         """Run method that performs all the real work"""
@@ -263,7 +263,7 @@ class RoofClassify:
                 rasterOutput = DataClassifier.writeGeotiff(
                     imgFilepath,
                     classifiedImage,
-                    self.getNumberofClasses(),
+                    self.get_classes_count(),
                     outputFilepath,
                 )
                 classifiedImages.append(rasterOutput)
