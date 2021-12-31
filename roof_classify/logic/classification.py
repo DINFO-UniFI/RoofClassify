@@ -173,7 +173,7 @@ class DataClassifier:
             "DATA_TYPE": 2,  # UInt16 data type
             "WIDTH": rlayer.rasterUnitsPerPixelX(),  # Using input raster resolution
             "HEIGHT": rlayer.rasterUnitsPerPixelY(),
-            "EXTENT": rlayer.id(),
+            "EXTENT": rlayer.extent(),
             "OUTPUT": "TEMPORARY_OUTPUT",
         }
         rasterizedRoofing = processing.run("gdal:rasterize", params)
