@@ -221,15 +221,15 @@ class DataClassifier:
         band.SetColorTable(pct)
 
         # Add metadata to the first image
-        metadata = {
-            "TIFFTAG_COPYRIGHT": "CC BY 4.0",
-            "TIFFTAG_DOCUMENTNAME": "classification",
-            "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
-            "TIFFTAG_MAXSAMPLEVALUE": str(roofTypesNumber),
-            "TIFFTAG_MINSAMPLEVALUE": "0",
-            "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
-        }
-        dataset.SetMetaData(metadata)
+        # metadata = {
+        #     "TIFFTAG_COPYRIGHT": "CC BY 4.0",
+        #     "TIFFTAG_DOCUMENTNAME": "classification",
+        #     "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
+        #     "TIFFTAG_MAXSAMPLEVALUE": str(roofTypesNumber),
+        #     "TIFFTAG_MINSAMPLEVALUE": "0",
+        #     "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
+        # }
+        # dataset.SetMetaData(metadata)
         rlayer = QgsRasterLayer(outputImgfilepath, "classifiedImg")
         return rlayer
 
