@@ -137,9 +137,8 @@ class DataClassifier:
                 str(roofVectorFilepath), rasterFilepath, classLabel
             )
             # Read the roof rasterized file, and convert the first raster band into a numpy array
-            roofLabelledRaster = (
-                gdal.Open(tempRasterFile).GetRasterBand(1).ReadAsArray()
-            )
+            img = gdal.Open(tempRasterFile)
+            roofLabelledRaster = numpy.array(img.GetRasterBand(1).ReadAsArray())
             labelledImg += roofLabelledRaster
         return labelledImg
 
