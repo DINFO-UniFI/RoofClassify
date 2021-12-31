@@ -134,7 +134,7 @@ class DataClassifier:
         files = [x for x in shpFolder]
         for classLabel, roofVectorFilepath in enumerate(files, start=1):
             tempRasterFile = self.rasterizeRoofingLayer(
-                roofVectorFilepath, rasterFilepath, classLabel
+                str(roofVectorFilepath), rasterFilepath, classLabel
             )
             # Read the roof rasterized file, and convert the first raster band into a numpy array
             roofLabelledRaster = (
