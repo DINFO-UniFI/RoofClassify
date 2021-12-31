@@ -128,7 +128,7 @@ class DataClassifier:
         """
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
         # The output image has the same dimension as the input raster layer
-        labelledImg = numpy.zeros((rlayer.width(), rlayer.height()))
+        labelledImg = numpy.zeros((rlayer.height(), rlayer.width()))
 
         shpFolder = Path(roofingShapefileDir).rglob("*.shp")
         files = [x for x in shpFolder]
