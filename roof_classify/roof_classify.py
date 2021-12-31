@@ -205,7 +205,7 @@ class RoofClassify:
     def select_raster_class(self):
         filename = QFileDialog.getOpenFileName(
             self.dlg, "select training raster", "", "*.tif"
-        )
+        )[0]
         self.dlg.lineEdit_3.setText(filename)
 
     def select_output_folder(self):
