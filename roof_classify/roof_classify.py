@@ -198,7 +198,7 @@ class RoofClassify:
     def select_raster(self):  # cartella che contiene i raster da dover classificare
         # filename = QFileDialog.getOpenFileName(self.dlg, "Select raster ","", '*.tif')
         directory = QFileDialog.getExistingDirectory(
-            self.dlg, "Seleziona cartella contenente raster da classificare"
+            self.dlg, "Select folder containing raster(s) to be classified"
         )
         # self.dlg.lineEdit.setText(filename)
         self.dlg.lineEdit.setText(directory)
@@ -207,13 +207,13 @@ class RoofClassify:
         # filename=QFileDialog.getOpenFileName(self.dlg, "select shape","",'*.shp')
         # self.dlg.lineEdit_2.setText(filename)
         directory2 = QFileDialog.getExistingDirectory(
-            self.dlg, "Seleziona cartella contenente shape di training"
+            self.dlg, "Select folder containing training layers"
         )
         self.dlg.lineEdit_2.setText(directory2)
 
     def select_raster_class(self):
         filename = QFileDialog.getOpenFileName(
-            self.dlg, "select training raster", "", "*.tif"
+            self.dlg, "Select training raster", "", "*.tif"
         )[0]
         self.dlg.lineEdit_3.setText(filename)
 
