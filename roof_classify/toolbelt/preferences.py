@@ -44,8 +44,9 @@ class PlgOptionsManager:
 
         options = PlgSettingsStructure(
             # classifiers
-            number_parallel_jobs=settings.value(key="number_parallel_jobs", defaultValue=2, type=int),
-
+            number_parallel_jobs=settings.value(
+                key="number_parallel_jobs", defaultValue=2, type=int
+            ),
             # misc
             debug_mode=settings.value(key="debug_mode", defaultValue=False, type=bool),
             version=settings.value(key="version", defaultValue=__version__, type=str),

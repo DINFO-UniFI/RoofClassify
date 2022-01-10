@@ -54,7 +54,9 @@ __plugin_md__ = plugin_metadata_as_dict()
 __author__ = __plugin_md__.get("general").get("author")
 __copyright__ = "2014 - {0}, {1}".format(date.today().year, __author__)
 __email__ = __plugin_md__.get("general").get("email")
-__icon_path__: Path = DIR_PLUGIN_ROOT.resolve() / __plugin_md__.get("general").get("icon")
+__icon_path__: Path = DIR_PLUGIN_ROOT.resolve() / __plugin_md__.get("general").get(
+    "icon"
+)
 __keywords__ = __plugin_md__.get("general").get("repository").split("tags")
 __license__ = "GPL-2.0"
 __summary__ = "{}\n{}".format(
