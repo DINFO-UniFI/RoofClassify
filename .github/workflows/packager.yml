@@ -25,7 +25,7 @@ jobs:
           sudo apt install qt5-default qttools5-dev-tools
 
       - name: Update translations
-        run: pylupdate5 -noobsolete -verbose ${{ env.PROJECT_FOLDER }}/resources/i18n/plugin_translation.pro
+        run: lupdate -noobsolete -verbose ${{ env.PROJECT_FOLDER }}/resources/i18n/plugin_translation.pro
 
       - name: Compile translations
         run: lrelease ${{ env.PROJECT_FOLDER }}/resources/i18n/*.ts
