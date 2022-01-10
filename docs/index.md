@@ -19,6 +19,15 @@ Open the plugins GUI by clicking to its icon or from the plugin menu entry `Plug
 
 Fill the entries with the requested paths and click `ok`
 
+```{toctree}
+---
+caption: User manual
+maxdepth: 1
+---
+usage/settings
+```
+
+----
 
 ```{toctree}
 ---
