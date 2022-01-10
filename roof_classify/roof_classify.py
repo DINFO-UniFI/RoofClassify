@@ -32,8 +32,8 @@ from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 # Import the code for the dialog
 from roof_classify.__about__ import __icon_path__, __title__
-from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
 from roof_classify.gui.dlg_settings import PlgOptionsFactory
+from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
 from roof_classify.logic import DataClassifier
 from roof_classify.toolbelt import PlgLogger
 
