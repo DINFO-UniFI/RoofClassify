@@ -106,6 +106,9 @@ jobs:
         with:
           name: dependencies-build
 
+      - name: List plugin files
+        run: ll -R ${{ env.PROJECT_FOLDER }}/
+
       - name: Package the latest version
         run: qgis-plugin-ci package latest --allow-uncommitted-changes
 
