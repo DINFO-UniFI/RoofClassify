@@ -2,13 +2,40 @@ name: "📦 Packager"
 
 env:
   PROJECT_FOLDER: "roof_classify"
-  PYTHON_VERSION: 3.7
+  PYTHON_VERSION: 3.8
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
+
+  pull_request:
+    branches: [master]
 
 jobs:
+  translation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get source code
+        uses: actions/checkout@v2
+
+      - name: Install system requirements
+        run: |
+          sudo apt update
+          sudo apt install qt5-default qttools5-dev-tools
+
+      - name: Update translations
+        run: pylupdate5 -noobsolete -verbose ${{ env.PROJECT_FOLDER }}/resources/i18n/plugin_translation.pro
+
+      - name: Compile translations
+        run: lrelease ${{ env.PROJECT_FOLDER }}/resources/i18n/*.ts
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: translations
+          path: ${{ env.PROJECT_FOLDER }}/**/*.qm
+          if-no-files-found: error
+
   packaging:
     runs-on: ubuntu-latest
 
@@ -17,21 +44,21 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup Python
-        uses: actions/setup-python@v2.3.1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - uses: actions/cache@v2.1.7
+      - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements/*.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Install system requirements
-        run: |
-          sudo apt update
-          sudo apt install qt5-default qttools5-dev-tools
+      - name: Download translations
+        uses: actions/download-artifact@v2
+        with:
+          name: translations
 
       - name: Install project requirements
         run: |
@@ -39,17 +66,11 @@ jobs:
           python -m pip install -U -r requirements/packaging.txt
           python -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
 
-      - name: Update translations
-        run: pylupdate5 -noobsolete -verbose ${{ env.PROJECT_FOLDER }}/resources/i18n/plugin_translation.pro
-
-      - name: Compile translations
-        run: lrelease roof_classify/resources/i18n/*.ts
-
       - name: Package the latest version
         run: qgis-plugin-ci package latest --allow-uncommitted-changes
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.PROJECT_FOLDER }}-latest
+          name: ${{ env.PROJECT_FOLDER }}-latest-linux
           path: ${{ env.PROJECT_FOLDER }}.*.zip
           if-no-files-found: error
