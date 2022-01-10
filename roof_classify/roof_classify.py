@@ -25,13 +25,15 @@ import os.path
 from pathlib import Path
 
 # Initialize Qt resources from file resources.py
-from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
+from qgis.core import QgsSettings
+from qgis.PyQt.QtCore import QCoreApplication, QLocale, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 # Import the code for the dialog
-from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__
+from roof_classify.__about__ import __icon_path__, __title__
 from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
+from roof_classify.gui.dlg_settings import PlgOptionsFactory
 from roof_classify.logic import DataClassifier
 from roof_classify.toolbelt import PlgLogger
 
@@ -53,7 +55,7 @@ class RoofClassify:
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
-        locale = QSettings().value("locale/userLocale")[0:2]
+        locale = QgsSettings().value("locale/userLocale", QLocale().name())[0:2]
         locale_path = os.path.join(
             self.plugin_dir, "i18n", "RoofClassify_{}.qm".format(locale)
         )
@@ -170,9 +172,12 @@ class RoofClassify:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = str(DIR_PLUGIN_ROOT / "resources/images/icon.png")
+        # settings page within the QGIS preferences menu
+        self.options_factory = PlgOptionsFactory()
+        self.iface.registerOptionsWidgetFactory(self.options_factory)
+
         self.add_action(
-            icon_path,
+            str(__icon_path__),
             text=self.tr("classify roofs"),
             callback=self.run,
             parent=self.iface.mainWindow(),
