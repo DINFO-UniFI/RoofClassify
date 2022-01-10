@@ -188,6 +188,10 @@ class RoofClassify:
         for action in self.actions:
             self.iface.removePluginMenu(__title__, action)
             self.iface.removeToolBarIcon(action)
+
+        # -- Clean up preferences panel in QGIS settings
+        self.iface.unregisterOptionsWidgetFactory(self.options_factory)
+
         # remove the toolbar
         del self.toolbar
 
