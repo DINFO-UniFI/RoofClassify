@@ -39,6 +39,7 @@ maxdepth: 1
 development/contributing
 development/environment
 development/documentation
+development/translation
 development/packaging
 development/testing
 development/history
