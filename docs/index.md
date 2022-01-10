@@ -10,15 +10,26 @@
 
 ----
 
-## Quick start Guide
-
-Go to `Plugins` -> `Manage and Install Plugins`, look for "ClassifyRoofs" Locator and install the plugin.
+## Quickstart
 
 Open the plugins GUI by clicking to its icon or from the plugin menu entry `Plugins`-> `ClassifyRoofs`.
-![gui](https://github.com/DINFO-UniFI/RoofClassify/blob/master/img/gui.png)
+
+![RoofClassify GUI](/static/gui_form_classification.png "RoofClassify GUI")
 
 Fill the entries with the requested paths and click `ok`
 
+----
+
+```{toctree}
+---
+caption: User manual
+maxdepth: 1
+---
+usage/installation
+usage/settings
+```
+
+----
 
 ```{toctree}
 ---
@@ -31,5 +42,4 @@ development/documentation
 development/packaging
 development/testing
 development/history
-<!-- misc/credits -->
 ```
