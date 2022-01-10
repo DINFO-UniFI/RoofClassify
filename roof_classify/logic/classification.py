@@ -23,6 +23,8 @@ from pathlib import Path
 from qgis import processing
 from qgis.core import QgsRasterLayer, QgsVectorLayer
 
+from roof_classify.toolbelt.preferences import PlgOptionsManager
+
 # ############################################################################
 # ########## Classes ###############
 # ##################################
@@ -57,8 +59,14 @@ class DataClassifier:
     """Data processing and classifiers."""
 
     def __init__(self) -> None:
+        """Initialize the classifier."""
+        settings = PlgOptionsManager.get_plg_settings()
+
         self.classifier_rf = RandomForestClassifier(
-            n_jobs=4, n_estimators=10, class_weight="balanced"
+            n_jobs=settings.number_parallel_jobs,
+            n_estimators=10,
+            class_weight="balanced",
+            verbose=settings.debug_mode,
         )
 
     def classifyRoofTypes(self, rasterFilepath: str) -> numpy.array:
