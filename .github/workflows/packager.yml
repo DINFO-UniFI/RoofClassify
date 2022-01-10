@@ -61,6 +61,7 @@ jobs:
           python -m pip install --no-deps -U -r requirements/embedded.txt -t ${{ env.PROJECT_FOLDER }}/embedded_external_libs
 
       - name: Cleaning up
+        shell: bash
         run: |
           rm -rf `find ${{ env.PROJECT_FOLDER }} -type d -name __pycache__`
           rm -rf `find ${{ env.PROJECT_FOLDER }} -type d -name *.dist-info`
