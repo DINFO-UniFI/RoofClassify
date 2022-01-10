@@ -60,15 +60,16 @@ jobs:
           python -m pip install -U pip setuptools wheel
           python -m pip install --no-deps -U -r requirements/embedded.txt -t ${{ env.PROJECT_FOLDER }}/embedded_external_libs
 
+      - name: Cleaning up
+        run: |
+          rm -rf `find ${{ env.PROJECT_FOLDER }} -type d -name __pycache__`
+          rm -rf `find ${{ env.PROJECT_FOLDER }} -type d -name *.dist-info`
+          rm -rf `find ${{ env.PROJECT_FOLDER }}/embedded_external_libs -type d -name tests`
+
       - uses: actions/upload-artifact@v2
         with:
           name: dependencies-build
-          path: |
-            ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
-            !__pycache__/
-            !*.pyc
-            !*.pyo
-            !*.dist-info/
+          path: ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
           if-no-files-found: error
 
   packaging:
@@ -107,7 +108,7 @@ jobs:
           name: dependencies-build
 
       - name: List plugin files
-        run: ll -R ${{ env.PROJECT_FOLDER }}/
+        run: ls -R ${{ env.PROJECT_FOLDER }}/
 
       - name: Package the latest version
         run: qgis-plugin-ci package latest --allow-uncommitted-changes
