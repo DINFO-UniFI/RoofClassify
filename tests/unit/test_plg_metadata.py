@@ -15,7 +15,7 @@ import unittest
 from pathlib import Path
 
 # 3rd party
-import semver
+from semver import VersionInfo
 
 # project
 from roof_classify import __about__
@@ -26,7 +26,7 @@ from roof_classify import __about__
 
 
 class TestPluginMetadata(unittest.TestCase):
-    """Test about module"""
+    """Test QGIS plugin metadata."""
 
     def test_metadata_types(self):
         """Test types."""
@@ -72,7 +72,7 @@ class TestPluginMetadata(unittest.TestCase):
 
     def test_version_semver(self):
         """Test if version comply with semantic versioning."""
-        self.assertTrue(semver.VersionInfo.isvalid(__about__.__version__))
+        self.assertTrue(VersionInfo.isvalid(__about__.__version__))
 
 
 # ############################################################################

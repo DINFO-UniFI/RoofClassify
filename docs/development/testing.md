@@ -1,37 +1,50 @@
 # Tests
 
+Tests are written in 2 separate folders:
+
+- `tests/unit`: testing code which is independent of QGIS API
+- `tests/qgis`: testing code which depends on QGIS API
+
 ## Requirements
 
-QGIS must be installed. Then:
+- QGIS 3.16+
 
 ```bash
+python -m pip install -U pip
 python -m pip install -U -r requirements/testing.txt
 ```
 
-## Run tests
-
-Run all tests:
+## Running tests
 
 ```bash
-pytest
+# run all tests with PyTest and Coverage report
+python -m pytest
+
+# run only unit tests
+python -m pytest tests/unit
+
+# run only QGIS tests
+python -m pytest tests/qgis
+
+# run a specific test module using standard unittest
+python -m unittest tests.unit.test_plg_metadata
+
+# run a specific test function using standard unittest
+python -m unittest tests.unit.test_plg_metadata.TestPluginMetadata.test_version_semver
 ```
 
-Run a specific test module:
+### Using Docker
+
+Build the image:
 
 ```bash
-python -m unittest tests.test_plg_metadata
+docker build --pull --rm -f "tests/tests_qgis.dockerfile" -t qgis_316:plugin_tester .
 ```
 
-Run a specific test:
+Run tests:
 
 ```bash
-python -m unittest tests.test_plg_metadata.TestPluginMetadata.test_version_semver
+docker run -v "$(pwd):/tmp/plugin" qgis_316:plugin_tester python3 -m pytest
 ```
 
-## Using Docker
-
-Alternatively, you can run unit tests using Docker:
-
-```bash
-docker build -f tests/tests_qgis.dockerfile -t qgis-plugin-testing .
-```
+Please note that will use the root rights on some folders.
