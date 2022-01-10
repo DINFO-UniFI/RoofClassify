@@ -107,6 +107,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dependencies-build
+          path: ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
 
       - name: List plugin files
         run: ls -R ${{ env.PROJECT_FOLDER }}/
