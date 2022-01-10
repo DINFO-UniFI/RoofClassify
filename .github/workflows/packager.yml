@@ -63,7 +63,12 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: dependencies-build
-          path: ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
+          path: |
+            ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
+            !__pycache__/
+            !*.pyc
+            !*.pyo
+            !*.dist-info/
           if-no-files-found: error
 
   packaging:
@@ -96,7 +101,7 @@ jobs:
         with:
           name: translations-build
 
-      - name: Download translations
+      - name: Download dependencies
         uses: actions/download-artifact@v2
         with:
           name: dependencies-build
