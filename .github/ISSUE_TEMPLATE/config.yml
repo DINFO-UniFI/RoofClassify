@@ -1,0 +1,6 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: Documentation
+    url: {{ cookiecutter.repository_url_pages }}
+    about: Please read carefully the documentation before to submit an issue.
