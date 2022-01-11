@@ -57,7 +57,7 @@
 <context>
     <name>RoofClassify</name>
     <message>
-        <location filename="../../roof_classify.py" line="179"/>
+        <location filename="../../plugin_main.py" line="179"/>
         <source>classify roofs</source>
         <translation>Classification des toits</translation>
     </message>
