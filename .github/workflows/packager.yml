@@ -112,11 +112,16 @@ jobs:
       # - name: List plugin files - only for debugging
       #   run: ls -R ${{ env.PROJECT_FOLDER }}/
 
+      - name: Amend gitignore to include embedded libs
+        run: |
+          sed -i "s|^${{ env.PROJECT_FOLDER }}/embedded_external_libs/.*| |" .gitignore
+          git add ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
+
       - name: Package the latest version
         run: qgis-plugin-ci package latest --allow-uncommitted-changes
 
-      - name: Insert dependencies into created zip
-        run: zip -r9 `find . -type f -name *.zip` ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
+      # - name: Insert dependencies into created zip
+      #   run: zip -r9 `find . -type f -name *.zip` ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
 
       - uses: actions/upload-artifact@v2
         with:
