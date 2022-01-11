@@ -16,11 +16,13 @@ Unreleased
 
 -->
 
-## [1.0.0-beta1] - 2021-07-01
+## [1.0.0-beta1] - 2022-01-11
 
 - completly refactored version by Oslandia:
-  - make the plugin compatible with QGIS 3.16+
+  - make the plugin compatible with QGIS 3.16 and 3.22
   - modern development workflow and tooling: linter, CI, CD
+  - classification improved (classes labels)
+  - UI is translated into French (English is used as default language)
   - the packaged plugin embeds the external dependencies
   - documentation published as GitHub Pages
 
