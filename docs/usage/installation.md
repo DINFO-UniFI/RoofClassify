@@ -2,14 +2,14 @@
 
 ## Requirements
 
-The plugin's logic is mainly based on well-known machine learning kit: [scikit-learn](https://scikit-learn.org/stable/). To work, the plugin needs it and it's quite a challenge to install it on QGIS for Windows, which uses it's own Python interpreter.
+The plugin's logic is mainly based on a well-known machine learning kit: [scikit-learn](https://scikit-learn.org/stable/). To work, the plugin needs it and it's quite a challenge to install it on QGIS for Windows, because it uses its own Python interpreter.
 
-To make it easier for the Windows end-users, we do our best to embed the depencies within the released version of the plugin, inside the `embedded_external_libs`.
+To make it easier for Windows end-users, we did our best to embed the depencies within the released version of the plugin, inside the `embedded_external_libs` folder.
 
 Technically, the plugin tries to:
 
 1. import Scikit-nearn from the Python interpreter used by QGIS (system on Linux, specific on Windows)
-1. adds `embedded_external_libs` to the `PYTHONPATH` and then import Scikit-Learn from it
+1. add `embedded_external_libs` to the `PYTHONPATH` and then import Scikit-Learn from it
 
 **BUT** there are some caveats because
 
@@ -19,12 +19,12 @@ Technically, the plugin tries to:
 
 - {{ qgis_version_min }} =< QGIS =< {{ qgis_version_max }}
 - Python 3.8+
-- dependencies listed in `requirements/embedded.txt`. On Linux, you need to install by yourself. Typically, on Ubuntu:
+- dependencies listed in `requirements/embedded.txt`. On Linux, you need to install them by yourself. Typically, on Ubuntu:
 
 ```bash
 # using the requirements file if you have the plugin repository
 python3 -m pip --no-deps -U -r requirements/embedded.txt
-# or directly - refer to the file to be sure use the updated good pinned versions
+# or directly - refer to the file to be sure of using the right updated pinned versions
 python3 -m pip --no-deps -U "joblib==1.1.*" "scikit-learn==1.0.*" "threadpoolctl>=2,<3"
 ```
 
