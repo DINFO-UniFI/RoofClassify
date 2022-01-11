@@ -15,8 +15,8 @@
 import unittest
 
 # project
-from roof_classify.__about__ import DIR_PLUGIN_ROOT, __title__, __version__
-from roof_classify.toolbelt.preferences import PlgSettingsStructure
+from RoofClassify.__about__ import DIR_PLUGIN_ROOT, __title__, __version__
+from RoofClassify.toolbelt.preferences import PlgSettingsStructure
 
 # ############################################################################
 # ########## Classes #############

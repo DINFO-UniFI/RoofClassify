@@ -5,7 +5,7 @@ on:
     tags: "*"
 
 env:
-  PROJECT_FOLDER: "roof_classify"
+  PROJECT_FOLDER: "RoofClassify"
   PYTHON_VERSION: 3.9
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
           path: ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
           if-no-files-found: error
 
-  packaging:
+  packaging-deployment:
     runs-on: ubuntu-latest
     needs: [translation, dependencies]
 

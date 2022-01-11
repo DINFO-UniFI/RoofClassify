@@ -22,14 +22,12 @@
 """
 
 
-# noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
-    """Load RoofClassify class from file RoofClassify.
+def classFactory(iface):
+    """Load RoofClassifyPlugin class from file plugin_main.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
-    from .roof_classify import RoofClassify
+    from .plugin_main import RoofClassifyPlugin
 
-    return RoofClassify(iface)
+    return RoofClassifyPlugin(iface)

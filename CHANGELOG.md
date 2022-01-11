@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 Unreleased
 
-## [{version_tag}](https://github.com/DINFO-UniFI/roof_classify/releases/tag/{version_tag}) - YYYY-DD-mm
+## [{version_tag}](https://github.com/DINFO-UniFI/RoofClassify/releases/tag/{version_tag}) - YYYY-DD-mm
 
 ### Added
 

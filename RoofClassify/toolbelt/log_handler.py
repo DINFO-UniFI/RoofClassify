@@ -11,8 +11,8 @@ from qgis.PyQt.QtWidgets import QPushButton
 from qgis.utils import iface
 
 # project package
-import roof_classify.toolbelt.preferences as plg_prefs_hdlr
-from roof_classify.__about__ import __title__
+import RoofClassify.toolbelt.preferences as plg_prefs_hdlr
+from RoofClassify.__about__ import __title__
 
 # ############################################################################
 # ########## Classes ###############

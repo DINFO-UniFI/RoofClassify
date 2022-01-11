@@ -33,18 +33,18 @@ from qgis.PyQt.QtGui import QDesktopServices, QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 # Import the code for the dialog
-from roof_classify.__about__ import __icon_path__, __title__, __uri_homepage__
-from roof_classify.gui.dlg_settings import PlgOptionsFactory
-from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
+from RoofClassify.__about__ import __icon_path__, __title__, __uri_homepage__
+from RoofClassify.gui.dlg_settings import PlgOptionsFactory
+from RoofClassify.gui.roof_classify_dialog import RoofClassifyDialog
 
 try:
-    from roof_classify.logic import DataClassifier
+    from RoofClassify.logic import DataClassifier
 except ImportError:
     DataClassifier = None
-from roof_classify.toolbelt import PlgLogger
+from RoofClassify.toolbelt import PlgLogger
 
 
-class RoofClassify:
+class RoofClassifyPlugin:
     """QGIS Plugin Implementation."""
 
     def __init__(self, iface):
