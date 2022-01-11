@@ -16,6 +16,10 @@ Unreleased
 
 -->
 
+## [1.0.0-beta2] - 2022-01-11
+
+- Rename plugin folder from roof_classify into RoofClassiy to fit already published versions
+
 ## [1.0.0-beta1] - 2022-01-11
 
 - completly refactored version by Oslandia:
