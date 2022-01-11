@@ -10,6 +10,8 @@ on:
 
   pull_request:
     branches: [master]
+    paths:
+      - .github/workflows/packager.yml
 
 jobs:
   translation:
@@ -112,7 +114,7 @@ jobs:
       # - name: List plugin files - only for debugging
       #   run: ls -R ${{ env.PROJECT_FOLDER }}/
 
-      - name: Amend gitignore to include embedded libs
+      - name: Amend gitignore to include embedded libs with qgis-plugin-ci
         run: |
           sed -i "s|^${{ env.PROJECT_FOLDER }}/embedded_external_libs/.*| |" .gitignore
           git add ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
