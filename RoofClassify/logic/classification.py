@@ -12,10 +12,10 @@ try:
 except Exception:
     import site
 
-    from roof_classify.__about__ import DIR_PLUGIN_ROOT
+    from RoofClassify.__about__ import DIR_PLUGIN_ROOT
 
     site.addsitedir(DIR_PLUGIN_ROOT / "embedded_external_libs")
-    from roof_classify.embedded_external_libs.sklearn.ensemble import (
+    from RoofClassify.embedded_external_libs.sklearn.ensemble import (
         RandomForestClassifier,
     )
 
@@ -24,7 +24,7 @@ from pathlib import Path
 from qgis import processing
 from qgis.core import QgsRasterLayer, QgsVectorLayer
 
-from roof_classify.toolbelt.preferences import PlgOptionsManager
+from RoofClassify.toolbelt.preferences import PlgOptionsManager
 
 # ############################################################################
 # ########## Classes ###############

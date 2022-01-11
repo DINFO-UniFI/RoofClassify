@@ -12,7 +12,7 @@ on:
       - '**.py'
 
 env:
-  PROJECT_FOLDER: "roof_classify"
+  PROJECT_FOLDER: "RoofClassify"
   PYTHON_VERSION: 3.9
 
 jobs:

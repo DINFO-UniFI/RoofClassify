@@ -28,7 +28,7 @@ from qgis.PyQt import uic
 from qgis.PyQt.QtWidgets import QDialog
 
 # plugin
-from roof_classify.__about__ import __title__, __version__
+from RoofClassify.__about__ import __title__, __version__
 
 # -- Globals
 FORM_CLASS, _ = uic.loadUiType(

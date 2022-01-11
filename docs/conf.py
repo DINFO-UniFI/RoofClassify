@@ -15,7 +15,7 @@ sys.path.insert(0, path.abspath(".."))
 import sphinx_rtd_theme  # noqa: F401
 
 # Package
-from roof_classify import __about__
+from RoofClassify import __about__
 
 # -- Build environment -----------------------------------------------------
 on_rtd = environ.get("READTHEDOCS", None) == "True"
@@ -78,8 +78,8 @@ pygments_style = "sphinx"
 
 # -- Theme
 
-html_favicon = "../roof_classify/resources/images/icon.png"
-html_logo = "../roof_classify/resources/images/icon.png"
+html_favicon = __about__.__icon_path__
+html_logo = __about__.__icon_path__
 html_static_path = ["static"]
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {

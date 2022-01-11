@@ -15,15 +15,15 @@ from qgis.PyQt.Qt import QUrl
 from qgis.PyQt.QtGui import QDesktopServices, QIcon
 
 # project
-from roof_classify.__about__ import (
+from RoofClassify.__about__ import (
     __icon_path__,
     __title__,
     __uri_homepage__,
     __uri_tracker__,
     __version__,
 )
-from roof_classify.toolbelt import PlgLogger, PlgOptionsManager
-from roof_classify.toolbelt.preferences import PlgSettingsStructure
+from RoofClassify.toolbelt import PlgLogger, PlgOptionsManager
+from RoofClassify.toolbelt.preferences import PlgSettingsStructure
 
 # ############################################################################
 # ########## Globals ###############

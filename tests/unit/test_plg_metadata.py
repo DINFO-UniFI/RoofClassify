@@ -18,7 +18,7 @@ from pathlib import Path
 from semver import VersionInfo
 
 # project
-from roof_classify import __about__
+from RoofClassify import __about__
 
 # ############################################################################
 # ########## Classes #############

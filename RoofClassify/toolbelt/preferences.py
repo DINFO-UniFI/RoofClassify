@@ -11,8 +11,8 @@ from typing import NamedTuple
 from qgis.core import QgsSettings
 
 # package
-import roof_classify.toolbelt.log_handler as log_hdlr
-from roof_classify.__about__ import __title__, __version__
+import RoofClassify.toolbelt.log_handler as log_hdlr
+from RoofClassify.__about__ import __title__, __version__
 
 # ############################################################################
 # ########## Classes ###############

@@ -136,4 +136,4 @@ dmypy.json
 
 # *.qm
 *.zip
-roof_classify/embedded_external_libs/
+RoofClassify/embedded_external_libs/

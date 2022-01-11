@@ -7,7 +7,7 @@ on:
       - 'docs/**/*'
       - '.github/workflows/docs_builder.yml'
       - 'requirements/documentation.txt'
-      - 'roof_classify/**/*.py'
+      - 'RoofClassify/**/*.py'
     tags: "*"
 
 env:

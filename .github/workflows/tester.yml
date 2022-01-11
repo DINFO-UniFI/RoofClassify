@@ -14,7 +14,7 @@ on:
       - 'requirements/embedded.txt'
 
 env:
-  PROJECT_FOLDER: "roof_classify"
+  PROJECT_FOLDER: "RoofClassify"
   PYTHON_VERSION: 3.9
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
       - name: Install Python requirements
         run: |
           python3 -m pip install -U pip setuptools wheel
-          python3 -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
+          python3 -m pip install --no-deps -U -r requirements/embedded.txt -t RoofClassify/embedded_external_libs
           python3 -m pip install -U -r requirements/testing.txt
 
       - name: Run Unit tests
