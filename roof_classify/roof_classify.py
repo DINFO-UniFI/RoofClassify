@@ -214,7 +214,7 @@ class RoofClassify:
     def select_raster_class(self):
         filename = QFileDialog.getOpenFileName(
             self.dlg, "select training raster", "", "*.tif"
-        )
+        )[0]
         self.dlg.lineEdit_3.setText(filename)
 
     def select_output_folder(self):
@@ -265,7 +265,7 @@ class RoofClassify:
                 classifiedImage = classifier.classifyRoofTypes(imgFilepath)
                 # Define an export filepath for the classified image
                 outputFilename = (file.name).replace(".tif", "_classsified.tif")
-                outputFilepath = outputDirectory / outputFilename
+                outputFilepath = "/".join((outputDirectory, outputFilename))
                 self.log(outputFilepath)
                 # Write the image array into a QgsRasterLayer
                 rasterOutput = classifier.writeGeotiff(
