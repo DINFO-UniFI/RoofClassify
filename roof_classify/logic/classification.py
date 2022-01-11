@@ -136,18 +136,17 @@ class DataClassifier:
         """
         rlayer = QgsRasterLayer(rasterFilepath, "inputRaster")
         # The output image has the same dimension as the input raster layer
-        labelledImg = numpy.zeros((rlayer.width(), rlayer.height()))
+        labelledImg = numpy.zeros((rlayer.height(), rlayer.width()))
 
         shpFolder = Path(roofingShapefileDir).rglob("*.shp")
         files = [x for x in shpFolder]
         for classLabel, roofVectorFilepath in enumerate(files, start=1):
             tempRasterFile = self.rasterizeRoofingLayer(
-                roofVectorFilepath, rasterFilepath, classLabel
+                str(roofVectorFilepath), rasterFilepath, classLabel
             )
             # Read the roof rasterized file, and convert the first raster band into a numpy array
-            roofLabelledRaster = (
-                gdal.Open(tempRasterFile).GetRasterBand(1).ReadAsArray()
-            )
+            img = gdal.Open(tempRasterFile)
+            roofLabelledRaster = numpy.array(img.GetRasterBand(1).ReadAsArray())
             labelledImg += roofLabelledRaster
         return labelledImg
 
@@ -181,7 +180,7 @@ class DataClassifier:
             "DATA_TYPE": 2,  # UInt16 data type
             "WIDTH": rlayer.rasterUnitsPerPixelX(),  # Using input raster resolution
             "HEIGHT": rlayer.rasterUnitsPerPixelY(),
-            "EXTENT": rlayer.id(),
+            "EXTENT": rlayer.extent(),
             "OUTPUT": "TEMPORARY_OUTPUT",
         }
         rasterizedRoofing = processing.run("gdal:rasterize", params)
@@ -229,15 +228,15 @@ class DataClassifier:
         band.SetColorTable(pct)
 
         # Add metadata to the first image
-        metadata = {
-            "TIFFTAG_COPYRIGHT": "CC BY 4.0",
-            "TIFFTAG_DOCUMENTNAME": "classification",
-            "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
-            "TIFFTAG_MAXSAMPLEVALUE": str(roofTypesNumber),
-            "TIFFTAG_MINSAMPLEVALUE": "0",
-            "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
-        }
-        dataset.SetMetaData(metadata)
+        # metadata = {
+        #     "TIFFTAG_COPYRIGHT": "CC BY 4.0",
+        #     "TIFFTAG_DOCUMENTNAME": "classification",
+        #     "TIFFTAG_IMAGEDESCRIPTION": "Supervised classification.",
+        #     "TIFFTAG_MAXSAMPLEVALUE": str(roofTypesNumber),
+        #     "TIFFTAG_MINSAMPLEVALUE": "0",
+        #     "TIFFTAG_SOFTWARE": "Python, GDAL, scikit-learn",
+        # }
+        # dataset.SetMetaData(metadata)
         rlayer = QgsRasterLayer(outputImgfilepath, "classifiedImg")
         return rlayer
 
