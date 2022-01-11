@@ -15,7 +15,7 @@ on:
 
 env:
   PROJECT_FOLDER: "roof_classify"
-  PYTHON_VERSION: 3.7
+  PYTHON_VERSION: 3.9
 
 jobs:
   tests:
