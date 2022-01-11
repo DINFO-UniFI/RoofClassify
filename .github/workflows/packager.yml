@@ -115,8 +115,8 @@ jobs:
       - name: Package the latest version
         run: qgis-plugin-ci package latest --allow-uncommitted-changes
 
-      - name: Insert dependencies
-        run: zip -r9 ${{ env.PROJECT_FOLDER }}/roof_classify.*.zip ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
+      - name: Insert dependencies into created zip
+        run: zip -r9 `find . -type f -name *.zip` ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
 
       - uses: actions/upload-artifact@v2
         with:
