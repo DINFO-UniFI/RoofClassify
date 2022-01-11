@@ -8,7 +8,7 @@ To make it easier for Windows end-users, we did our best to embed the depencies 
 
 Technically, the plugin tries to:
 
-1. import Scikit-nearn from the Python interpreter used by QGIS (system on Linux, specific on Windows)
+1. import Scikit-learn from the Python interpreter used by QGIS (system on Linux, specific on Windows)
 1. add `embedded_external_libs` to the `PYTHONPATH` and then import Scikit-Learn from it
 
 **BUT** there are some caveats because
