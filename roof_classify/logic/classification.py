@@ -1,6 +1,7 @@
 #! python3  # noqa: E265
 
 # 3rd party
+import csv
 from typing import List
 
 import numpy
@@ -149,6 +150,20 @@ class DataClassifier:
             roofLabelledRaster = numpy.array(img.GetRasterBand(1).ReadAsArray())
             labelledImg += roofLabelledRaster
         return labelledImg
+
+    @staticmethod
+    def write_link_classlabel_roof_shp(roofingShapefileDir):
+        shpFolder = Path(roofingShapefileDir).rglob("*.shp")
+        files = [x for x in shpFolder]
+        # Write into a csv file the link between class label and roof layer
+        csv_filepath = roofingShapefileDir + "/link_classlabel_rooflayer.csv"
+        f = open(csv_filepath, "w")
+        writer = csv.writer(f)
+        fields = ["class label", "roof layer filepath"]
+        writer.writerow(fields)
+        for classLabel, roofVectorFilepath in enumerate(files, start=1):
+            writer.writerow([classLabel, roofVectorFilepath])
+        f.close()
 
     @staticmethod
     def rasterizeRoofingLayer(

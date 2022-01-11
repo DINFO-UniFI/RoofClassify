@@ -256,6 +256,9 @@ class RoofClassify:
             # Training the classifier
             classifier.train(trainingRasterFilepath, shapefilesDirectory)
 
+            # Link class labels to roof types
+            DataClassifier.write_link_classlabel_roof_shp(shapefilesDirectory)
+
             classifiedImages = []
             # Parsing the images to be classified
             for file in Path(rasterDirectory).rglob("*.tif"):
