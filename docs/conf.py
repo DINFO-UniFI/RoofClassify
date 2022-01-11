@@ -78,8 +78,8 @@ pygments_style = "sphinx"
 
 # -- Theme
 
-html_favicon = __about__.__icon_path__
-html_logo = __about__.__icon_path__
+html_favicon = str(__about__.__icon_path__)
+html_logo = str(__about__.__icon_path__)
 html_static_path = ["static"]
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
