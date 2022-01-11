@@ -19,7 +19,7 @@ tracker=https://github.com/DINFO-UniFI/RoofClassify/issues/
 deprecated=False
 experimental=False
 qgisMinimumVersion=3.16
-qgisMaximumVersion=3.99
+qgisMaximumVersion=3.22
 
 
 # versionning

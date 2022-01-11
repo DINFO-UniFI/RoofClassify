@@ -1,8 +1,11 @@
 # Embedded requirements
 #
+# Python packages required by the plugin and which are not included into the embedded Python in QGIS (mainly Windows).
+#
 # Typical command to install:
 # python -m pip install --no-deps -U -r requirements/embedded.txt -t roof_classify/embedded_external_libs
 # -----------------------
 
-joblib>=0.11
+joblib==1.1.*
 scikit-learn==1.0.*
+threadpoolctl>=2,<3

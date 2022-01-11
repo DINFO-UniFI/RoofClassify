@@ -22,19 +22,25 @@
 
 # standard
 import os.path
+from functools import partial
 from pathlib import Path
 
 # Initialize Qt resources from file resources.py
 from qgis.core import QgsSettings
+from qgis.PyQt.Qt import QUrl
 from qgis.PyQt.QtCore import QCoreApplication, QLocale, QTranslator
-from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtGui import QDesktopServices, QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 # Import the code for the dialog
-from roof_classify.__about__ import __icon_path__, __title__
+from roof_classify.__about__ import __icon_path__, __title__, __uri_homepage__
 from roof_classify.gui.dlg_settings import PlgOptionsFactory
 from roof_classify.gui.roof_classify_dialog import RoofClassifyDialog
-from roof_classify.logic import DataClassifier
+
+try:
+    from roof_classify.logic import DataClassifier
+except ImportError:
+    DataClassifier = None
 from roof_classify.toolbelt import PlgLogger
 
 
@@ -83,6 +89,25 @@ class RoofClassify:
         self.dlg.pushButton_3.clicked.connect(self.select_raster_class)
         self.dlg.lineEdit_4.clear()
         self.dlg.pushButton_4.clicked.connect(self.select_output_folder)
+
+    def check_dependencies(self) -> None:
+        """Check if all dependencies are satisfied. If not, warn the user and disable plugin."""
+        # if import failed
+        if DataClassifier is None:
+            self.log(
+                message=self.tr("Error importing Scikit Learn. Plugin disabled."),
+                log_level=2,
+                push=True,
+                button=True,
+                button_connect=partial(
+                    QDesktopServices.openUrl,
+                    QUrl(f"{__uri_homepage__}/usage/installation"),
+                ),
+            )
+            for action in self.actions:
+                action.setEnabled(False)
+        else:
+            self.log(message=self.tr("Dependencies satisfied"), log_level=4)
 
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
@@ -182,6 +207,9 @@ class RoofClassify:
             callback=self.run,
             parent=self.iface.mainWindow(),
         )
+
+        # -- Post UI initialization
+        self.iface.initializationCompleted.connect(self.check_dependencies)
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
