@@ -16,6 +16,11 @@ Unreleased
 
 -->
 
+## [1.0.0-beta3] - 2022-01-12
+
+- Make the dependencies checks more robust.
+- Improve CI to fit GreenIT principles and fix plugin upload
+
 ## [1.0.0-beta2] - 2022-01-11
 
 - Rename plugin folder from roof_classify into RoofClassiy to fit already published versions
