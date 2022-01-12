@@ -132,7 +132,7 @@ myst_substitutions = {
     "version": version,
 }
 
-myst_url_schemes = ("http", "https", "mailto")
+myst_url_schemes = ["http", "https", "mailto"]
 
 # OpenGraph
 ogp_image = f"{__about__.__uri_homepage__}_static/gui_form_classification.png"
