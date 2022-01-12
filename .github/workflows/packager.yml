@@ -139,7 +139,7 @@ jobs:
 
   # -- ONLY ON TAGS ----------------------------------------------------------------------
   release:
-    name: "Release on tag 🚀"
+    name: "🚀 Release on tag"
     runs-on: ubuntu-latest
     needs: [translation, dependencies]
 
