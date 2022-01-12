@@ -104,7 +104,7 @@ class PlgLogger(logging.Handler):
         if push:
 
             # calc duration
-            if not duration:
+            if duration is None:
                 duration = (log_level + 1) * 3
 
             # create message with/out a widget
