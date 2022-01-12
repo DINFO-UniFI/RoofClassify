@@ -16,6 +16,10 @@ Unreleased
 
 -->
 
+## [1.0.0-beta4] - 2022-01-12
+
+- Fix packaged plugin for Windows: include pyd files (Python DLL) into zip archive.
+
 ## [1.0.0-beta3] - 2022-01-12
 
 - Make the dependencies checks more robust.
