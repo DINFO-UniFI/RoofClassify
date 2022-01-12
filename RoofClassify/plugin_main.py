@@ -103,11 +103,14 @@ class RoofClassifyPlugin:
                     QDesktopServices.openUrl,
                     QUrl(f"{__uri_homepage__}/usage/installation"),
                 ),
+                duration=0,
             )
             for action in self.actions:
                 action.setEnabled(False)
         else:
             self.log(message=self.tr("Dependencies satisfied"), log_level=4)
+            for action in self.actions:
+                action.setEnabled(True)
 
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
@@ -209,7 +212,8 @@ class RoofClassifyPlugin:
         )
 
         # -- Post UI initialization
-        self.iface.initializationCompleted.connect(self.check_dependencies)
+        # self.iface.initializationCompleted.connect(self.check_dependencies)
+        self.check_dependencies()
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
