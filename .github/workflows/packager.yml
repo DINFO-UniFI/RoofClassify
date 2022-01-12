@@ -122,6 +122,7 @@ jobs:
 
       - name: Amend gitignore to include embedded libs with qgis-plugin-ci
         run: |
+          sed -i 's/^\*\.py\[cod\].*//' .gitignore
           sed -i "s|^${{ env.PROJECT_FOLDER }}/embedded_external_libs/.*| |" .gitignore
           git add ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
 
@@ -183,6 +184,7 @@ jobs:
 
       - name: Amend gitignore to include embedded libs with qgis-plugin-ci
         run: |
+          sed -i 's/^\*\.py\[cod\].*//' .gitignore
           sed -i "s|^${{ env.PROJECT_FOLDER }}/embedded_external_libs/.*| |" .gitignore
           git add ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
 
