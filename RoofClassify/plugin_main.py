@@ -47,8 +47,7 @@ class RoofClassifyPlugin:
         # Save reference to the QGIS interface
         self.iface = iface
         self.log = PlgLogger().log
-        # initialize plugin directory
-        self.plugin_dir = os.path.dirname(__file__)
+
         # initialize locale
         locale: str = QgsSettings().value("locale/userLocale", QLocale().name())[0:2]
         locale_path: Path = DIR_PLUGIN_ROOT / f"resources/i18n/{__title__}_{locale}.qm"
@@ -56,6 +55,7 @@ class RoofClassifyPlugin:
         if locale_path.exists():
             self.translator = QTranslator()
             self.translator.load(str(locale_path.resolve()))
+            QCoreApplication.installTranslator(self.translator)
             self.log(message=f"DEBUG: Translation used: {locale_path}", log_level=4)
 
         # Create the dialog (after translation) and keep reference
