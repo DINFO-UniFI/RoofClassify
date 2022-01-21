@@ -80,26 +80,64 @@
     </message>
 </context>
 <context>
+    <name>RoofClassifyDialogBase</name>
+    <message>
+        <location filename="../../gui/roof_classify_dialog_base.ui" line="26"/>
+        <source>RoofClassify</source>
+        <translation>Roof Classify</translation>
+    </message>
+    <message>
+        <location filename="../../gui/roof_classify_dialog_base.ui" line="49"/>
+        <source>Select output folder</source>
+        <translation>Sélectionner le dossier de sortie</translation>
+    </message>
+    <message>
+        <location filename="../../gui/roof_classify_dialog_base.ui" line="133"/>
+        <source>Browse</source>
+        <translation>Parcourir</translation>
+    </message>
+    <message>
+        <location filename="../../gui/roof_classify_dialog_base.ui" line="69"/>
+        <source>Select raster(s) to be classified (folder)</source>
+        <translation>Sélectionner le dossier contenant le(s) raster(s) à classifier</translation>
+    </message>
+    <message>
+        <location filename="../../gui/roof_classify_dialog_base.ui" line="89"/>
+        <source>Select training raster (.tif)</source>
+        <translation>Sélectionner le raster d&apos;entraînement (.tif)</translation>
+    </message>
+    <message>
+        <location filename="../../gui/roof_classify_dialog_base.ui" line="99"/>
+        <source>Select training shapes (folder)</source>
+        <translation>Sélectionner le dossier contenant les shapes d&apos;entraînement</translation>
+    </message>
+</context>
+<context>
     <name>RoofClassifyPlugin</name>
     <message>
-        <location filename="../../plugin_main.py" line="81"/>
+        <location filename="../../plugin_main.py" line="85"/>
         <source>Error importing Scikit Learn. Plugin disabled.</source>
         <translation>Une erreur est survenue lors de l&apos;import de Scikit-Learn (dépendance requise). Le plugin a été désactivé.</translation>
     </message>
     <message>
-        <location filename="../../plugin_main.py" line="95"/>
+        <location filename="../../plugin_main.py" line="100"/>
         <source>Dependencies satisfied</source>
         <translation>Toutes les dépendances sont OK</translation>
     </message>
     <message>
-        <location filename="../../plugin_main.py" line="191"/>
+        <location filename="../../plugin_main.py" line="196"/>
         <source>Launch classification</source>
         <translation>Lancer une classification</translation>
     </message>
     <message>
-        <location filename="../../plugin_main.py" line="198"/>
+        <location filename="../../plugin_main.py" line="203"/>
         <source>Settings</source>
         <translation>Options</translation>
+    </message>
+    <message>
+        <location filename="../../plugin_main.py" line="85"/>
+        <source>Installation instructions</source>
+        <translation>Instructions d&apos;installation</translation>
     </message>
 </context>
 </TS>
