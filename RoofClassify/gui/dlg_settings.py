@@ -57,7 +57,9 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
         self.btn_help.pressed.connect(
             partial(QDesktopServices.openUrl, QUrl(__uri_homepage__))
         )
-
+        self.btn_credits.pressed.connect(
+            partial(QDesktopServices.openUrl, QUrl(f"{__uri_homepage__}misc/credits"))
+        )
         self.btn_report.setIcon(
             QIcon(":images/themes/default/console/iconSyntaxErrorConsole.svg")
         )
