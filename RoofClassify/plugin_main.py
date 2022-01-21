@@ -10,14 +10,19 @@ from functools import partial
 from pathlib import Path
 
 # Initialize Qt resources from file resources.py
-from qgis.core import QgsSettings, QgsApplication
+from qgis.core import QgsApplication, QgsSettings
 from qgis.PyQt.Qt import QUrl
 from qgis.PyQt.QtCore import QCoreApplication, QLocale, QTranslator
 from qgis.PyQt.QtGui import QDesktopServices, QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 # Import the code for the dialog
-from RoofClassify.__about__ import __icon_path__, __title__, __uri_homepage__
+from RoofClassify.__about__ import (
+    DIR_PLUGIN_ROOT,
+    __icon_path__,
+    __title__,
+    __uri_homepage__,
+)
 from RoofClassify.gui.dlg_settings import PlgOptionsFactory
 from RoofClassify.gui.roof_classify_dialog import RoofClassifyDialog
 
@@ -45,14 +50,13 @@ class RoofClassifyPlugin:
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
-        locale = QgsSettings().value("locale/userLocale", QLocale().name())[0:2]
-        locale_path = os.path.join(
-            self.plugin_dir, "i18n", "RoofClassify_{}.qm".format(locale)
-        )
+        locale: str = QgsSettings().value("locale/userLocale", QLocale().name())[0:2]
+        locale_path: Path = DIR_PLUGIN_ROOT / f"resources/i18n/{__title__}_{locale}.qm"
 
-        if os.path.exists(locale_path):
+        if locale_path.exists():
             self.translator = QTranslator()
-            self.translator.load(locale_path)
+            self.translator.load(str(locale_path.resolve()))
+            self.log(message=f"DEBUG: Translation used: {locale_path}", log_level=4)
 
         # Create the dialog (after translation) and keep reference
 
@@ -87,6 +91,7 @@ class RoofClassifyPlugin:
                     QDesktopServices.openUrl,
                     QUrl(f"{__uri_homepage__}/usage/installation"),
                 ),
+                button_text=self.tr("Installation instructions"),
                 duration=0,
             )
             for action in self.actions:
