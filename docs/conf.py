@@ -11,9 +11,6 @@ from os import environ, path
 
 sys.path.insert(0, path.abspath(".."))
 
-# 3rd party
-import sphinx_rtd_theme  # noqa: F401
-
 # Package
 from RoofClassify import __about__
 
@@ -36,12 +33,9 @@ github_doc_root = "{}/tree/master/doc/".format(__about__.__uri_repository__)
 # ones.
 extensions = [
     # Sphinx included
-    "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.extlinks",
     "sphinx.ext.githubpages",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.viewcode",
     # 3rd party
     "myst_parser",
     "sphinx_copybutton",
@@ -80,6 +74,7 @@ pygments_style = "sphinx"
 
 html_favicon = str(__about__.__icon_path__)
 html_logo = str(__about__.__icon_path__)
+html_show_sourcelink = False
 html_static_path = ["static"]
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
@@ -98,11 +93,11 @@ html_theme_options = {
 
 # -- EXTENSIONS --------------------------------------------------------
 # Configuration for intersphinx (refer to others docs).
-intersphinx_mapping = {
-    "PyQt5": ("https://www.riverbankcomputing.com/static/Docs/PyQt5", None),
-    "python": ("https://docs.python.org/3/", None),
-    "qgis": ("https://qgis.org/pyqgis/master/", None),
-}
+# intersphinx_mapping = {
+#     "PyQt5": ("https://www.riverbankcomputing.com/static/Docs/PyQt5", None),
+#     "python": ("https://docs.python.org/3/", None),
+#     "qgis": ("https://qgis.org/pyqgis/master/", None),
+# }
 
 # MyST Parser
 myst_enable_extensions = [
