@@ -37,6 +37,7 @@ caption: Contribution guide
 maxdepth: 1
 ---
 development/contributing
+misc/credits
 development/environment
 development/documentation
 development/translation
