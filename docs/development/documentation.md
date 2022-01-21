@@ -17,17 +17,20 @@ The documentation is divided into categories. To update a particular page, find 
 
 Put images in the `assets` directory.
 
-```{tip}
-To see live rendering of your documentation, you can run: `sphinx-autobuild -b html docs docs/_build/html`.
+````{tip}
+To see live rendering of your documentation, you can run:
+
+```bash
+sphinx-autobuild -b html -d docs/_build/cache docs docs/_build/html
 ```
+````
 
 After you make changes to the documentation, please make a PR.
 
 ## Build
 
 ```bash
-# build it
-sphinx-build -b html docs docs/_build/html
+sphinx-build -b html -d docs/_build/cache -j auto -q docs docs/_build/html
 ```
 
 Open `docs/_build/index.html` in a web browser.
