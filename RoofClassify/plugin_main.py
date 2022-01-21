@@ -1,23 +1,7 @@
-"""
-/***************************************************************************
- ClassifyRoof
-                                 A QGIS plugin
- this plugin classifies building's roof
-                              -------------------
-        begin                : 2020-06-22
-        git sha              : $Format:%H$
-        copyright            : (C) 2020 by alessandro bacciottini, arjan feta
-        email                : arjan.feta@stud.unifi.it
- ***************************************************************************/
+#! python3  # noqa: E265
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+"""
+    Main plugin module.
 """
 
 # standard
@@ -26,7 +10,7 @@ from functools import partial
 from pathlib import Path
 
 # Initialize Qt resources from file resources.py
-from qgis.core import QgsSettings
+from qgis.core import QgsSettings, QgsApplication
 from qgis.PyQt.Qt import QUrl
 from qgis.PyQt.QtCore import QCoreApplication, QLocale, QTranslator
 from qgis.PyQt.QtGui import QDesktopServices, QIcon
@@ -112,7 +96,7 @@ class RoofClassifyPlugin:
             for action in self.actions:
                 action.setEnabled(True)
 
-    def tr(self, message):
+    def tr(self, message: str) -> str:
         """Get the translation for a string using Qt translation API.
 
         We implement this ourselves since we do not inherit QObject.
@@ -121,7 +105,7 @@ class RoofClassifyPlugin:
         :type message: str, QString
 
         :returns: Translated version of message.
-        :rtype: QString
+        :rtype: str
         """
         return QCoreApplication.translate(__title__, message)
 
@@ -206,9 +190,19 @@ class RoofClassifyPlugin:
 
         self.add_action(
             str(__icon_path__),
-            text=self.tr("classify roofs"),
+            text=self.tr("Launch classification"),
             callback=self.run,
             parent=self.iface.mainWindow(),
+        )
+
+        self.add_action(
+            icon_path=QgsApplication.iconPath("console/iconSettingsConsole.svg"),
+            text=self.tr("Settings"),
+            callback=lambda: self.iface.showOptionsDialog(
+                currentPage="mOptionsPage{}".format(__title__)
+            ),
+            parent=self.iface.mainWindow(),
+            add_to_toolbar=False,
         )
 
         # -- Post UI initialization
