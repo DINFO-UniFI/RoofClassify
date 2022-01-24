@@ -71,6 +71,7 @@ jobs:
           rm -rf `find ${{ env.PROJECT_FOLDER }} -type d -name __pycache__`
           rm -rf `find ${{ env.PROJECT_FOLDER }} -type d -name *.dist-info`
           rm -rf `find ${{ env.PROJECT_FOLDER }}/embedded_external_libs -type d -name tests`
+          rm -rf `find ${{ env.PROJECT_FOLDER }}/embedded_external_libs -type d -name test`
 
       - uses: actions/upload-artifact@v2
         with:
