@@ -16,6 +16,13 @@ Unreleased
 
 -->
 
+## 1.0.0 - 2022-01-24
+
+- Add credit page
+- Add credit menu
+- Fix and upgrade translation
+- Minor documentation improvement
+
 ## [1.0.0-beta4] - 2022-01-12
 
 - Fix packaged plugin for Windows: include pyd files (Python DLL) into zip archive.
