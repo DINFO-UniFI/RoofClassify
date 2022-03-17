@@ -8,4 +8,4 @@
 
 joblib==1.1.*
 scikit-learn==1.0.*
-threadpoolctl>=2,<3
+threadpoolctl>=2,<4
