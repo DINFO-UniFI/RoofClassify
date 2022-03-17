@@ -134,7 +134,7 @@ dmypy.json
 # Custom ###################################
 # ##########################################
 
-# *.qm
+*.qm
 *.zip
 release.md
 RoofClassify/embedded_external_libs/
