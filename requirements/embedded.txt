@@ -6,6 +6,6 @@
 # python -m pip install --no-deps -U -r requirements/embedded.txt -t RoofClassify/embedded_external_libs
 # -----------------------
 
-joblib==1.1.*
+joblib==1.2.*
 scikit-learn==1.1.*
 threadpoolctl>=2,<4
