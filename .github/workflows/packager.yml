@@ -26,7 +26,7 @@ jobs:
       - name: Install system requirements
         run: |
           sudo apt update
-          sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools
+          sudo apt install qttools5-dev-tools
 
       - name: Update translations
         run: lupdate -noobsolete -verbose ${{ env.PROJECT_FOLDER }}/resources/i18n/plugin_translation.pro
