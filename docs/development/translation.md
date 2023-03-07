@@ -2,10 +2,10 @@
 
 ## Requirements
 
-Qt Linguist tools are used to manage translations. Typically on Ubuntu:
+Qt Linguist tools are used to manage translations. Typically on Ubuntu 22.04:
 
 ```bash
-sudo apt install qttools5-dev-tools
+sudo apt install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools
 ```
 
 ## Workflow

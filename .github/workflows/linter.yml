@@ -19,7 +19,7 @@ jobs:
   lint-py:
     name: Python 🐍
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Get source code
