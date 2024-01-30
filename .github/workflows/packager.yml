@@ -34,7 +34,7 @@ jobs:
       - name: Compile translations
         run: lrelease ${{ env.PROJECT_FOLDER }}/resources/i18n/*.ts
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: translations-build
           path: ${{ env.PROJECT_FOLDER }}/**/*.qm
@@ -74,7 +74,7 @@ jobs:
           rm -rf `find ${{ env.PROJECT_FOLDER }}/embedded_external_libs -type d -name tests`
           rm -rf `find ${{ env.PROJECT_FOLDER }}/embedded_external_libs -type d -name test`
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dependencies-build
           path: ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
@@ -136,7 +136,7 @@ jobs:
       # - name: Insert dependencies into created zip
       #   run: zip -r9 `find . -type f -name *.zip` ${{ env.PROJECT_FOLDER }}/embedded_external_libs/
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_FOLDER }}-latest
           path: ${{ env.PROJECT_FOLDER }}.*.zip
