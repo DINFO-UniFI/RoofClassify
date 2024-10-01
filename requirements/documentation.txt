@@ -2,7 +2,7 @@
 # -----------------------
 
 myst-parser[linkify]>=2
-sphinx>=6,<8
+sphinx>=6,<9
 sphinx-autobuild>=2024
 sphinx-copybutton>=0.2,<1
 sphinx-rtd-theme>=2,<3
