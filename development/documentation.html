@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Documentation" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://DINFO-UniFI.github.io/RoofClassify/development/documentation.html" />
+<meta property="og:site_name" content="RoofClassify" />
+<meta property="og:description" content="This documentation website is generated using Sphinx and deployed on GitHub pages using GitHub Actions. To work on the documentation, install the related requirements: Write: The documentation is d..." />
+<meta property="og:image" content="https://DINFO-UniFI.github.io/RoofClassify/_static/gui_form_classification.png" />
+<meta property="og:image:alt" content="RoofClassify" />
+<meta name="description" content="This documentation website is generated using Sphinx and deployed on GitHub pages using GitHub Actions. To work on the documentation, install the related requirements: Write: The documentation is d..." />
+<meta name='twitter:card' content='summary_large_image'>
+<meta property="twitter:description" content="A QGIS Tool for Automatically Identifying Asbestos Roofing
+A QGIS tool that is conceived for automatically identifying buildings with asbestos roofing. Its task is to identify asbestos cladding in remotely sensed images, but not to classify the different types of roofing. For more detailed information on how it works: https://www.mdpi.com/2220-9964/8/3/131." />
+<meta property="twitter:image" content="https://DINFO-UniFI.github.io/RoofClassify/_static/gui_form_classification.png" />
+<meta property="twitter:site" content="@geotribu" />
+<meta property="twitter:title" content="RoofClassify" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation &mdash; RoofClassify 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="shortcut icon" href="../_static/icon.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Manage translations" href="translation.html" />
+    <link rel="prev" title="Development environment setup" href="environment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: SteelBlue" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RoofClassify
+              <img src="../_static/icon.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/settings.html">Settings</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contribution guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/credits.html">Credits and sponsoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#write">Write</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deploy">Deploy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Manage translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packaging.html">Packaging and deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">CHANGELOG</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: SteelBlue" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RoofClassify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="environment.html" class="btn btn-neutral float-left" title="Development environment setup" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="translation.html" class="btn btn-neutral float-right" title="Manage translations" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h1>
+<p>This documentation website is generated using Sphinx and deployed on <a class="reference external" href="https://pages.github.com/">GitHub pages</a> using GitHub Actions.</p>
+<p>To work on the documentation, install the related requirements:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>-r<span class="w"> </span>requirements/documentation.txt
+</pre></div>
+</div>
+<section id="write">
+<h2>Write<a class="headerlink" href="#write" title="Link to this heading"></a></h2>
+<p>The documentation is divided into categories. To update a particular page, find the markdown file in the related folder:</p>
+<ul class="simple">
+<li><p>for end-users: <code class="docutils literal notranslate"><span class="pre">docs/usage</span></code></p></li>
+<li><p>for developers: <code class="docutils literal notranslate"><span class="pre">docs/development</span></code></p></li>
+</ul>
+<p>Put images in the <code class="docutils literal notranslate"><span class="pre">assets</span></code> directory.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To see live rendering of your documentation, you can run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphinx-autobuild<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>-d<span class="w"> </span>docs/_build/cache<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
+</pre></div>
+</div>
+</div>
+<p>After you make changes to the documentation, please make a PR.</p>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>-d<span class="w"> </span>docs/_build/cache<span class="w"> </span>-j<span class="w"> </span>auto<span class="w"> </span>-q<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">docs/_build/index.html</span></code> in a web browser.</p>
+</section>
+<section id="deploy">
+<h2>Deploy<a class="headerlink" href="#deploy" title="Link to this heading"></a></h2>
+<p>Documentation website is hosted on GitHub Pages. Deployment takes advantage of <a class="reference external" href="https://pypi.org/project/ghp-import/"><code class="docutils literal notranslate"><span class="pre">ghp-import</span></code> library</a>. It’s automatically triggered on CI but it’s still possible to deploy it manually:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ghp-import<span class="w"> </span>--force<span class="w"> </span>--no-jekyll<span class="w"> </span>--push<span class="w"> </span>docs/_build/html
+</pre></div>
+</div>
+<p>Files are uploaded to the branch <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> of the repository: <a class="reference external" href="https://github.com/QGIS-Contribution/QGIS-ResourceSharing/tree/gh-pages">https://github.com/QGIS-Contribution/QGIS-ResourceSharing/tree/gh-pages</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environment.html" class="btn btn-neutral float-left" title="Development environment setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="translation.html" class="btn btn-neutral float-right" title="Manage translations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014 - 2025, Alessandro Bacciottini, Arjan Feta, Quy Thy Truong (Oslandia), Julien Moura (Oslandia).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="CHANGELOG" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://DINFO-UniFI.github.io/RoofClassify/development/history.html" />
+<meta property="og:site_name" content="RoofClassify" />
+<meta property="og:description" content="The format is based on Keep a Changelog, and this project adheres to Semantic Versioning. 1.0.0 - 2022-01-24: Add credit page, Add credit menu, Fix and upgrade translation, Minor documentation impr..." />
+<meta property="og:image" content="https://DINFO-UniFI.github.io/RoofClassify/_static/gui_form_classification.png" />
+<meta property="og:image:alt" content="RoofClassify" />
+<meta name="description" content="The format is based on Keep a Changelog, and this project adheres to Semantic Versioning. 1.0.0 - 2022-01-24: Add credit page, Add credit menu, Fix and upgrade translation, Minor documentation impr..." />
+<meta name='twitter:card' content='summary_large_image'>
+<meta property="twitter:description" content="A QGIS Tool for Automatically Identifying Asbestos Roofing
+A QGIS tool that is conceived for automatically identifying buildings with asbestos roofing. Its task is to identify asbestos cladding in remotely sensed images, but not to classify the different types of roofing. For more detailed information on how it works: https://www.mdpi.com/2220-9964/8/3/131." />
+<meta property="twitter:image" content="https://DINFO-UniFI.github.io/RoofClassify/_static/gui_form_classification.png" />
+<meta property="twitter:site" content="@geotribu" />
+<meta property="twitter:title" content="RoofClassify" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHANGELOG &mdash; RoofClassify 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="shortcut icon" href="../_static/icon.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Tests" href="testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: SteelBlue" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RoofClassify
+              <img src="../_static/icon.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/settings.html">Settings</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contribution guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/credits.html">Credits and sponsoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Manage translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packaging.html">Packaging and deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Tests</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.0.0 - 2022-01-24</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#beta4-2022-01-12">[1.0.0-beta4] - 2022-01-12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#beta3-2022-01-12">[1.0.0-beta3] - 2022-01-12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#beta2-2022-01-11">[1.0.0-beta2] - 2022-01-11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#beta1-2022-01-11">[1.0.0-beta1] - 2022-01-11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">[0.4.0] - 2019-03-01</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: SteelBlue" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RoofClassify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CHANGELOG</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="testing.html" class="btn btn-neutral float-left" title="Tests" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="changelog">
+<h1>CHANGELOG<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<p>The format is based on <a class="reference external" href="https://keepachangelog.com/">Keep a Changelog</a>, and this project adheres to <a class="reference external" href="https://semver.org/">Semantic Versioning</a>.</p>
+<!--
+
+Unreleased
+
+## [{version_tag}](https://github.com/DINFO-UniFI/RoofClassify/releases/tag/{version_tag}) - YYYY-DD-mm
+
+### Added
+
+### Changed
+
+### Removed
+
+-->
+<section id="id1">
+<h2>1.0.0 - 2022-01-24<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Add credit page</p></li>
+<li><p>Add credit menu</p></li>
+<li><p>Fix and upgrade translation</p></li>
+<li><p>Minor documentation improvement</p></li>
+</ul>
+</section>
+<section id="beta4-2022-01-12">
+<h2>[1.0.0-beta4] - 2022-01-12<a class="headerlink" href="#beta4-2022-01-12" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Fix packaged plugin for Windows: include pyd files (Python DLL) into zip archive.</p></li>
+</ul>
+</section>
+<section id="beta3-2022-01-12">
+<h2>[1.0.0-beta3] - 2022-01-12<a class="headerlink" href="#beta3-2022-01-12" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Make the dependencies checks more robust.</p></li>
+<li><p>Improve CI to fit GreenIT principles and fix plugin upload</p></li>
+</ul>
+</section>
+<section id="beta2-2022-01-11">
+<h2>[1.0.0-beta2] - 2022-01-11<a class="headerlink" href="#beta2-2022-01-11" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Rename plugin folder from roof_classify into RoofClassiy to fit already published versions</p></li>
+</ul>
+</section>
+<section id="beta1-2022-01-11">
+<h2>[1.0.0-beta1] - 2022-01-11<a class="headerlink" href="#beta1-2022-01-11" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>completly refactored version by Oslandia:</p>
+<ul>
+<li><p>make the plugin compatible with QGIS 3.16 and 3.22</p></li>
+<li><p>modern development workflow and tooling: linter, CI, CD</p></li>
+<li><p>classification improved (classes labels)</p></li>
+<li><p>UI is translated into French (English is used as default language)</p></li>
+<li><p>the packaged plugin embeds the external dependencies</p></li>
+<li><p>documentation published as GitHub Pages</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h2>[0.4.0] - 2019-03-01<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>version published for QGIS 2.18</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="testing.html" class="btn btn-neutral float-left" title="Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014 - 2025, Alessandro Bacciottini, Arjan Feta, Quy Thy Truong (Oslandia), Julien Moura (Oslandia).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script> 
+
+</body>
+</html>
